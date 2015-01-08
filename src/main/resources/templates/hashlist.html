@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Spring Boot!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace ="fragments/header :: header"/>
+<table id="display-data">
+			<thead>
+				<tr>
+					<th>Count</th>
+					<th>code</th>
+					<th>bits</th>
+					<th>latitudeSize</th>
+					<th>longitudeSize</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="hash, rowStat : ${hashes}">
+					<td th:text="${rowStat.count}">1</td>
+					<td th:text="${hash.code}">My Name</td>
+					<td th:text="${hash.significantBits}">my@email.com</td>
+					<td th:text="${hash.latitudeSize}">9999</td>
+					<td th:text="${hash.longitudeSize}">http://mysite.com</td>
+				</tr>
+			</tbody>
+		</table>
+</body>
+</html>

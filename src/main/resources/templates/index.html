@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Localzone Stream</title>
+		<script src="sockjs-0.3.4.js"></script>
+		<script src="stomp.js"></script>
+		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"/>
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+		<script th:replace="fragments/googlemaps :: googlemapsheader"/>
+		 
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="styles.css" />
+		
+		<script>
+			//<![CDATA[
+			$(function() {
+			    $( "#slider" ).slider({
+			     // orientation: "vertical",
+			      range: "min",
+			      min: 0.5,
+			      max: 5.6,
+			      value: 3,
+			      step: 0.1,
+			      slide: function( event, ui ) {
+			        $( "#amount" ).val( ui.value );
+			      }
+			    });
+			    
+			    $( "#amount" ).val( $( "#slider" ).slider( "value" ) );
+
+			    $( "#slider" ).on( "slidechange", function( event, ui ) {
+					$( "#amount" ).val( ui.value );
+					clearRectangles();
+					drawRectangles(ui.value);
+					showMessages (ui.value);
+				} );
+			  });
+
+			//]]>
+		</script>
+		<script type="text/javascript">
+			//<![CDATA[
+			var posLongitude;
+			var posLatitude;
+			var accuracy;    	
+	    
+	    	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	    	function initialize () {
+		    	if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(callback);
+		    	} else {
+					error('not supported');
+				}
+	    	}	
+			function showMessage(message) {
+				var response = document.getElementById('response');
+				var p = document.createElement('p');
+				p.style.wordWrap = 'break-word';
+				// p.appendChild(document.createTextNode(body));
+				newdiv = $(".message:last").clone();
+				$(newdiv).find(".body").html(message.status);
+				$(newdiv).find(".author").html(message.from);
+				$(newdiv).find(".time").html(message.time);
+				$(newdiv).find(".distance").html(message.distance);
+	
+				$("#conversationDiv").prepend(newdiv);
+				//response.appendChild(p);
+			}
+
+			function showlocation() {
+		   		// One-shot position request.
+		   		navigator.geolocation.getCurrentPosition(callback);
+		   	}
+		 
+			function callback(position) {
+				document.getElementById('latitude').innerHTML = position.coords.latitude;
+				document.getElementById('longitude').innerHTML = position.coords.longitude;
+				posLatitude = position.coords.latitude;
+				posLongitude = position.coords.longitude;
+				posAccuracy = position.coords.accuracy;
+	    		initializeMap(posLatitude, posLongitude,11);
+	    		var radius = $( "#amount" ).val();
+	    		drawRectangles(radius);
+				showMessages (radius);
+		}
+			
+			function showMessages (radius) {
+				var query = { 
+						location: {
+							'latitude': posLatitude, 
+							'longitude': posLongitude, 
+							'accuracy': posAccuracy
+						},
+						radius:radius,
+					};
+				$.ajax({
+					type: "POST",
+					url:"restReceive",
+					Accept : "application/json",
+					contentType: "application/json",
+					data: JSON.stringify(query)
+				})
+				.done(function( msg ) {
+					var conversationDiv = document.getElementById('conversationDiv');
+					while (conversationDiv.firstChild) {
+					    //The list is LIVE so it will re-index each call
+					    conversationDiv.removeChild(conversationDiv.firstChild);
+					}
+				   //var jsonData = JSON.parse(msg);
+				   for (var i = 0; i < msg.length; i++) {
+						var message = msg[i];
+						console.log(message.status);
+						showMessage (message);
+				   }
+				});		   
+					
+			}
+		//]]>	
+		</script>
+	</head>
+	<body>
+		<div>
+			<input type="button" value="Refresh"
+				onclick="javascript:showlocation()"/> <br /> 
+				
+				<div style="visibility: hidden">
+				Latitude: <span
+				id="latitude"></span> <br /> Longitude: <span id="longitude"></span>
+				</div>
+		</div>
+		 <div class="container">
+			<div class="row">
+				<div class="col-md-4"> 
+					<div id="map-canvas" ></div>
+				</div>
+				<div class="col-md-8"> 
+					<div id="conversationDiv">
+						<p id="response"></p>
+					</div>
+				
+					<div style="visibility: hidden">
+						<div class="message">
+							<div class="message-header">
+								<span class="author">Author</span>
+								<span class="time">time</span>
+								<span class="distance">distance</span>
+							</div>
+							<span class="body">body</span>
+						</div>
+					</div>
+				</div>				
+			</div>
+			<div class="row">
+				<div class="col-md-3"> 
+					<p>
+						<label for="amount">Radius (km):</label><input type="text" id="amount" readonly="readonly" style="border:0; color:#f6931f; font-weight:bold;"/> 
+					</p>
+					<div id="slider"></div>
+				</div>
+			</div>
+			<div class="row">		
+
+			</div>
+		</div>	
+	</body>
+</html>

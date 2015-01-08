@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Localzone Stream</title>
+<link rel="stylesheet" href="styles.css">
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		connect();
+	});
+</script>
+<script type="text/javascript">
+	var stompClient = null;
+
+	function setConnected(connected) {
+		document.getElementById('conversationDiv').style.visibility = connected ? 'visible'
+				: 'hidden';
+		document.getElementById('response').innerHTML = '';
+	}
+
+	function connect() {
+		var socket = new SockJS('/localzone');
+		stompClient = Stomp.over(socket);
+		stompClient.connect({}, function(frame) {
+			setConnected(true);
+			console.log('Connected: ' + frame);
+			stompClient.subscribe('/topic/messages', function(message) {
+				console.log("received message");
+				showMessage(message);
+			});
+		});
+	}
+
+	function disconnect() {
+		stompClient.disconnect();
+		setConnected(false);
+		console.log("Disconnected");
+	}
+
+	function sendName() {
+		var name = document.getElementById('name').value;
+		stompClient.send("/app/localzone", {}, JSON.stringify({
+			'name' : name
+		}));
+	}
+
+	function showMessage(message) {
+		var response = document.getElementById('response');
+		var p = document.createElement('p');
+		p.style.wordWrap = 'break-word';
+		body = JSON.parse(message.body).payload.body
+		subject = JSON.parse(message.body).payload.subject
+		authorname = JSON.parse(message.body).header.from.name
+		// p.appendChild(document.createTextNode(body));
+		newdiv = $(".message:last").clone();
+		$(newdiv).find(".body").html(body);
+		$(newdiv).find(".author").html(authorname);
+
+		$("#conversationDiv").prepend(newdiv);
+		//response.appendChild(p);
+	}
+</script>
+</head>
+<body>
+	<noscript>
+		<h2 style="color: #ff0000">Seems your browser doesn't support
+			Javascript! Websocket relies on Javascript being enabled. Please
+			enable Javascript and reload this page!</h2>
+	</noscript>
+	<div>
+		<div id="conversationDiv">
+
+			<p id="response"></p>
+		</div>
+	</div>
+	<div style="visibility: hidden">
+		<div class="message">
+			<div class="message-header">
+				<span class="author">Author</span><span>‏&nbsp;</span><span
+					class="time">time</span>
+
+			</div>
+			<span class="body">body</span>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+		<meta charset="utf-8"/>
+		<title>Rectangles</title>
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+ 
+
+		<script th:replace="fragments/googlemaps :: googlemapsheader"/>
+		<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"/>
+ 	    <link rel="stylesheet" href="styles.css" />
+
+	    <script>
+			//<![CDATA[           
+			$(function() {
+			    $( "#slider" ).slider({
+			     // orientation: "vertical",
+			      range: "min",
+			      min: 0.5,
+			      max: 5.6,
+			      value: 3,
+			      step: 0.1,
+			      slide: function( event, ui ) {
+			        $( "#amount" ).val( ui.value );
+			      }
+			    });
+			    
+			    $( "#amount" ).val( $( "#slider" ).slider( "value" ) );
+
+			    $( "#slider" ).on( "slidechange", function( event, ui ) {
+					$( "#amount" ).val( ui.value );
+					clearRectangles();
+					drawRectangles(ui.value);
+				} );
+			  });
+			//]]>
+		</script>
+
+	    <script>
+			//<![CDATA[
+	    
+	    	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	    	function initialize () {
+		    	if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(callback);
+		    	} else {
+					error('not supported');
+				}
+	    	}	
+
+	    	function callback (position) {
+	    		document.getElementById('latitude').innerHTML = position.coords.latitude;
+				document.getElementById('longitude').innerHTML = position.coords.longitude;
+				posLatitude = position.coords.latitude;
+				posLongitude = position.coords.longitude;
+				posAccuracy = position.coords.accuracy;
+	    		initializeMap(posLatitude, posLongitude,11);
+	    		var radius = $( "#amount" ).val();
+	    		console.log (radius);
+	    		drawRectangles(radius);
+	    	}	    		    	
+
+/*
+	    	function drawRectangles (radius) {
+				var query = { 
+					location: {
+						'latitude': posLatitude, 
+						'longitude': posLongitude, 
+						'accuracy': posAccuracy
+					},
+					radius:radius,
+					precision:30
+				};
+					
+				$.ajax({
+					type: "POST",
+					url:"getLocationHashes",
+					Accept : "application/json",
+					contentType: "application/json",
+					data: JSON.stringify(query)
+				})
+				   .done(function( msg ) {
+					   for (var i = 0; i < msg.length; i++) {
+					       var message = msg[i];
+							drawRectangle(message.minLatitude,message.minLongitude,message.maxLatitude,message.maxLongitude,0.3);
+					}
+				});
+	    	}
+*/	    	
+			//]]>	    		    	
+	    </script>
+	</head>
+	<body>
+		<div th:replace="fragments/header :: header">test</div>
+	
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3"> 
+					<div id="map-canvas" ></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3"> 
+					<p>
+						<label for="amount">Radius (km):</label><input type="text" id="amount" readonly="readonly" style="border:0; color:#f6931f; font-weight:bold;"/> 
+					</p>
+					<div id="slider"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					Latitude: <span
+					id="latitude"></span> <br /> Longitude: <span id="longitude"></span>
+					</div>		
+				</div>
+			</div>
+	</body>
+</html>

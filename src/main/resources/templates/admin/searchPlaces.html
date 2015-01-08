@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+	<div th:replace="fragments/header :: header">test</div>
+	<form action="#" th:action="@{/searchPlaces}" th:object="${search}"
+		method="post" accept-charset="utf-8">
+		<table>
+			<tr>
+				<td>From:</td>
+				<td><input type="text" th:field="*{name}" /></td>
+
+			</tr>
+		</table>
+		<p>
+			<input type="submit" value="Submit" />
+		</p>
+	</form>
+
+	<table>
+		<tr th:each="item:${respList}">
+		<td><a th:href="@{/loadPlaceFromCache}+'?placeId='+${item.place_id}"><span th:text="${item.display_name}"></span></a></td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta charset="utf-8"/>
+    <title>Rectangles</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script th:fragment="googlemapsheader">
+// This example adds a red rectangle to a map.
+//<![CDATA[
+           var map;
+       
+function initializeMap(centerlat,centerlon,zoom) {
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
+    zoom: zoom,
+    center: new google.maps.LatLng(centerlat, centerlon),
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  });
+
+
+}
+var rectArray = [];
+function drawRectangle(lat1, lon1, lat2, lon2,opacity) {
+var rectangle = new google.maps.Rectangle({
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 0,
+    fillColor: '#FF0000',
+    fillOpacity: opacity,
+    map: map,
+    bounds: new google.maps.LatLngBounds(
+    	    new google.maps.LatLng(lat1, lon1),
+    		new google.maps.LatLng(lat2, lon2))
+    });
+    rectArray.push(rectangle);
+}
+function setMarker (lat,lon) {
+	var myLatlng = new google.maps.LatLng(lat,lon);
+var marker = new google.maps.Marker({
+    position: myLatlng,
+    map: map,
+    title: 'Hello World!'
+});}
+
+function clearRectangles() {
+	  for (var i = 0; i < rectArray.length; i++ ) {
+		  rectArray[i].setMap(null);
+	  }
+	  rectArray.length = 0;
+	}
+var posLongitude;
+var posLatitude;
+var accuracy;    	
+
+function drawRectangles (radius) {
+	var query = { 
+		location: {
+			'latitude': posLatitude, 
+			'longitude': posLongitude, 
+			'accuracy': posAccuracy
+		},
+		radius:radius,
+	};
+		
+	$.ajax({
+		type: "POST",
+		url:"getLocationHashes",
+		Accept : "application/json",
+		contentType: "application/json",
+		data: JSON.stringify(query)
+	})
+	   .done(function( msg ) {
+		   for (var i = 0; i < msg.length; i++) {
+		       var message = msg[i];
+				drawRectangle(message.minLatitude,message.minLongitude,message.maxLatitude,message.maxLongitude,0.3);
+		}
+	});
+}
+
+//]]>
+    </script>
+  </head>
+  <body>
+ 
+  <input type="button" value="Refresh"
+			onclick="javascript:drawRectangle(52.416657, 13.337456,52.431739, 13.33803)"/>
+    <div id="map-canvas"></div>
+  </body>
+</html>
