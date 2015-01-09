@@ -1,0 +1,430 @@
+/* less mixins  */
+.bodyBg(@color:@bgColor) {
+  background-color: @color;
+}
+
+.primary(@bg, @fg, @bgStart:@primaryBg) {
+  color:@fg;
+  border-color:@bgStart;
+  background-color:@bg;
+}
+
+.colorGroup(@bg) {
+  background-color:@bg;
+}
+
+.colorGroup(@bg, @fg, @bc:@transparentBorder) {
+  background-color:@bg;
+  color:@fg;
+  /*border-color:@bc;*/
+}
+
+.wellStyle {
+  background-color:@darkBg;
+  border-color:@darkBorder;
+  color:@lightFg;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  border-bottom:3px solid rgba(0,0,0,.05);
+}
+
+.panelStyle {
+  background-color:@darkBg;
+  border-color:@darkBg;
+  color:@lightFg;
+  border-bottom:3px solid rgba(0,0,0,.05);
+}
+
+.tabStyle {
+  color:@lightFg;
+  background-color:@transparentBg;
+  border-color:@lightBg;
+  border-bottom-width:0;
+}
+
+
+/* skin ----------------------------------------------------------------------*/
+body {
+  .bodyBg();
+  font-family:@fontFamily;
+  color:@lightFg;
+}
+
+hr {
+  border-color:@hrColor;
+}
+
+.nav>li>a:hover, .nav>li>a:focus {
+  background-color:@transparentBg;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.open>a:focus {
+  background-color:@transparentBg;
+  color:@defaultFg;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+  color:@lightFgHover;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+  border-color:@transparentBorder;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color:@lightFg;
+}
+
+.navbar-brand {
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:15pt;
+}
+
+.btn, .btn-group, .btn-lg, .btn-group-lg>.btn, .btn-sm,
+.btn-group-sm>.btn, .form-control, .input-group-addon {
+  border-radius:@buttonBorderRadius;
+  box-shadow:0 0 0;
+}
+
+.btn-default.disabled, .btn-default[disabled], .btn-default[disabled]:focus {
+  background-color:transparent;
+  color:#555;
+}
+
+.form-control, .input-group-addon, .input-group-btn>.btn-default, pre {
+  border-color:@formControlBorder;
+  background-color:@formControlBg;
+  color:@formControlFg;
+}
+
+.well, .panel, .panel-heading, .panel-footer, .list-group,
+.nav-tabs>li>a, .nav-tabs.nav-justified>li>a, .dropdown-menu,
+.list-group-item:first-child, .list-group-item:last-child  {
+  border-radius:@borderRadius;
+}
+
+.well {
+  .wellStyle
+}
+
+.panel, .list-group, .list-group-item {
+  .panelStyle
+}
+
+a,a.list-group-item {
+  color:@linkColor;
+}
+a:visited {
+  color:@linkVisitedColor;
+}
+a:hover, a:focus {
+  color:@linkHoverColor;
+}
+
+h1 {
+  .h1;
+}
+h2 {
+  .h2();
+}
+h3 {
+  .h3();
+}
+h4 {
+  .h4;
+}
+
+
+.label, .badge {
+  font-family: arial, sans-serif;
+}
+
+.dropdown-menu, .thumbnail {
+  background-color:@defaultBgLight;
+}
+
+.dropdown-menu>li>a, .thumbnail .caption {
+  color:@defaultFg;
+}
+
+.dropdown-menu .divider, .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+  background-color:@transparentBg;
+}
+
+.img-thumbnail {
+  background-color:rgba(250,250,250,0.9);
+}
+
+.modal-content {
+  background-color:@modalBg;
+}
+
+.modal-footer, .modal-header {
+  border-color:@transparentBorder;
+}
+
+.breadcrumb {
+  background-color:@breadcrumbBg;
+  text-transform:@breadcrumbText;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li>a:hover,
+.nav-tabs>li.active>a:focus, .nav-tabs.nav-justified>li>a:hover, .nav-tabs.nav-justified>li.active>a {
+  .tabStyle();
+}
+
+.nav-tabs, .nav-tabs.nav-justified {
+  border-bottom-width:0;
+  background-color:@bgColor;
+}
+
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
+  background-color:@bgColor;
+}
+
+.btn-primary, .bg-primary, .label-primary, .alert-primary, .progress-bar-primary,
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus,
+a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+  .primary(@primaryBg, @primaryFg);
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+   border-color:@primaryBg;  
+}
+
+.btn-default, .bg-default, .label-default, .alert-default, .progress-bar-default, .navbar-default {
+  .colorGroup(@defaultBgLight, @defaultFg, @defaultBorderLight);
+}
+.btn-info, .bg-info, .label-info, .alert-info, .progress-bar-info {
+  .colorGroup(@infoBg, @infoFg);
+}
+.btn-success, .bg-success, .label-success, .alert-success, .progress-bar-success {
+  .colorGroup(@successBg, @successFg);
+}
+.btn-warning, .bg-warning, .label-warning, .alert-warning, .progress-bar-warning {
+  .colorGroup(@warningBg, @warningFg);
+}
+.btn-danger, .bg-danger, .label-danger, .alert-danger, .progress-bar-danger {
+  .colorGroup(@dangerBg, @dangerFg);
+}
+
+.btn-default:hover, .bg-default:hover, .label-default:hover, .alert-default:hover, .progress-bar-default:hover {
+  .colorGroup(@defaultBgHover, @lightFg);
+}
+.btn-info:hover, .bg-info:hover, .label-info:hover, .alert-info:hover, .progress-bar-info:hover {
+  .colorGroup(@infoBgHover);
+}
+.btn-success:hover, .bg-success:hover, .label-success:hover, .alert-success:hover, .progress-bar-success:hover {
+  .colorGroup(@successBgHover);
+}
+.btn-warning:hover, .bg-warning:hover, .label-warning:hover .alert-warning:hover, .progress-bar-warning:hover {
+  .colorGroup(@warningBgHover);
+}
+.btn-danger:hover, .bg-danger:hover, .label-danger:hover, .alert-danger:hover, .progress-bar-danger:hover {
+  .colorGroup(@dangerBgHover);
+}
+
+/* light color backgrounds */
+.panel-default > .panel-heading, .panel-default > .panel-footer {
+  .colorGroup(@defaultBgLight, @defaultFg);
+}
+.panel-primary > .panel-heading, .panel-primary > .panel-footer {
+  .colorGroup(@primaryBgLight);
+}
+.panel-info > .panel-heading, .panel-info > .panel-footer, .list-group-item-info {
+  .colorGroup(@infoBgLight, @infoFg);
+}
+.panel-warning > .panel-heading, .panel-warning > .panel-footer {
+  .colorGroup(@warningBgLight);
+}
+.panel-danger > .panel-heading, .panel-danger > .panel-footer {
+  .colorGroup(@dangerBgLight);
+}
+.panel-success > .panel-heading, .panel-success > .panel-footer {
+  .colorGroup(@successBgLight);
+}
+
+
+.panel-default, .panel-default > .panel-heading {
+  border-color:@defaultBgLight;
+}
+.panel-primary, .panel-primary > .panel-heading {
+  border-color:@primaryBg;
+}
+.panel-info, .panel-info > .panel-heading {
+  border-color:@infoBg;
+}
+.panel-warning, .panel-warning > .panel-heading {
+  border-color:@warningBg;
+}
+.panel-danger, .panel-danger > .panel-heading {
+  border-color:@dangerBg;
+}
+.panel-success, .panel-success > .panel-heading {
+  border-color:@successBg;
+}
+
+/* text color */
+.text-primary {
+  color:@primaryBgLight;
+}
+.text-info {
+  color:@infoBgLight;
+}
+.text-warning {
+  color:@warningBgLight;
+}
+.text-danger {
+  color:@dangerBgLight;
+}
+.text-success {
+  color:@successBgLight;
+}
+.text-muted {
+  color:@textMuted;
+}
+
+.breadcrumb, .pagination>li>a, .pagination>li>span, .pager>li>a, .close {
+  background-color:@transparentBg;
+  color:@transparentFg;
+  border-color:transparent;
+}
+
+.nav-tabs>li>a:hover, .nav-tabs.nav-justified>li>a:hover {
+  background-color:@transparentBg;
+  color:@defaultFg;
+  border-color:@bgColor;
+}
+
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover,
+.pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+  background-color:@primaryBg;
+  border-color:@transparentBorder;  
+}
+
+.pagination>li>a:hover, .pagination>li>span:hover, .pager>li>a:hover {
+  opacity:0.8; 
+}
+
+.pagination>.disabled>span, .pagination>.disabled>span:hover,
+.pagination>.disabled>span:focus, .pagination>.disabled>a, .pager>.disabled>a,
+.pagination>.disabled>a:hover, .pagination>.disabled>a:focus {
+  background-color:@transparentBg;
+  color:@transparentFg;
+  border-color:transparent;
+  opacity:0.8;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td, .table-striped>tbody>tr:nth-child(odd)>th, .progress, 
+a.list-group-item:hover, .table-striped>tbody>tr:nth-child(odd):hover>td, .table>tbody>tr:hover>td, .table-hover>tbody>tr:hover>td {
+  background-color:@transparentBg;
+}
+
+.table-bordered, .table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .nav-tabs, .thumbnail,
+.table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td,
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+  border-color:@transparentBorder;
+}
+
+
+
+/* less variables ------------------------------------------------------------*/
+@fontFamily     : 'Source Sans Pro', sans-serif;
+
+/* links */
+@linkColor      : #2a76db;
+@linkVisitedColor: ;
+@linkHoverColor : ; 
+
+@hrColor        : rgba(220,220,220,0.2);
+
+/* general use colors */
+@bgColor        :#f7f7f7;
+@lightBg        :#ffffff;
+@lightFg        :#818181;
+@lightFgHover   : ;
+@lightBorder    : ;
+
+@darkBg         :#fdfdfd;
+@darkFg         : ;
+@darkFgHover    : ;
+@darkBorder     :#ffffff;
+
+@transparentBg  : ; 
+@transparentFg  : ;
+@transparentBorder  :rgba(220, 220, 220, 0.5);
+@textMuted      :rgba(110, 110, 110, 0.6); 
+
+.h1() {}
+
+.h2() {
+ text-transform:uppercase;
+}
+
+.h3() {
+ font-weight: 800;
+ font-size: 12pt;
+ letter-spacing: 1.4px;
+ text-transform:uppercase;
+}
+
+.h4() {
+ font-size: 16px;
+ letter-spacing: 1.5px;
+ text-transform: uppercase;
+}
+
+@modalBg        : ;
+@breadcrumbBg   : ;
+@breadcrumbText : uppercase;
+
+/* context colors */
+@defaultBg      : ;
+@successBg      : #5cb85c;
+@primaryBg      : #2a76db;
+@infoBg         : #45a5e6;
+@dangerBg       : #df2e1b;
+@warningBg      : #f7c034;
+
+@defaultBgHover : ;
+@successBgHover : #4ba74b;
+@primaryBgHover : #204a84;
+@infoBgHover    : #3494d5;
+@dangerBgHover  : #ce2e1b;
+@warningBgHover : #f8d145;
+
+/* border colors */
+@defaultBorder  : ; 
+@defaultBorderLight: ;
+
+@formControlBg  : ;
+@formControlFg  : ;
+@formControlBorder: rgba(220,220,220,0.4);
+
+/* lighter context colors for panel headings and alert backgrounds */
+@defaultBgLight : #eeeeee;
+@successBgLight : #6dc96d;
+@primaryBgLight : #3b87ec;
+@infoBgLight    : #67c7f8;
+@dangerBgLight  : #ff4f3d;
+@warningBgLight : #f8d145;
+
+@defaultFg      : #333;
+@successFg      : #fff;
+@primaryFg      : #eee;
+@infoFg         : #fff;
+@dangerFg       : #fff;
+@warningFg      : #333;
+
+/* heading - h1, h2, h3, h4.. colors */
+@headingFg      : #999;
+@headingBg      : ;
+
+/* borders for wells, panels, list groups, etc.. */
+@borderRadius   : 2px;
+
+/* button border radius */
+@buttonBorderRadius:  3px;

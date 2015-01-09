@@ -26,6 +26,24 @@ function initializeMap(centerlat,centerlon,zoom) {
 
 
 }
+var draw_circle = null;  // object of google maps polygon for redrawing the circle
+function drawCircle(centerlat,centerlon,rad) {
+
+ 
+   if (draw_circle != null) {
+       draw_circle.setMap(null);
+   }
+   draw_circle = new google.maps.Circle({
+       center: new google.maps.LatLng(centerlat, centerlon),
+       radius: rad,
+       strokeColor: "#000000",
+       strokeOpacity: 0.3,
+       strokeWeight: 2,
+       fillColor: "#00000",
+       fillOpacity: 0.2,
+       map: map
+   });
+}
 var rectArray = [];
 function drawRectangle(lat1, lon1, lat2, lon2,opacity) {
 var rectangle = new google.maps.Rectangle({

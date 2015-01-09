@@ -1,0 +1,87 @@
+/* for social colors */
+.btn-facebook,.color-facebook {
+	background-color:#4c66a4;
+    color:#fff;
+}
+.btn-google,.color-google {
+	background-color:#dd4b39;
+    color:#fff;
+}
+.btn-twitter,.color-twitter {
+	background-color:#2ba9e1;
+    color:#fff;
+}
+.btn-pinterest,.color-pinterest {
+	background-color:#cb2027;
+    color:#fff;
+}
+.btn-tumblr,.color-tumblr {
+	background-color:#2c4762;
+    color:#fff;
+}
+
+/* hover and active */
+.btn-facebook:hover, .color-facebook:hover, .btn-facebook:focus,.color-facebook:focus {
+	background-color:#2a4887;
+    color:#fff;
+}
+.btn-google:hover, .color-google:hover, .btn-google:active,.color-google:active {
+	background-color:#cc3a28;
+    color:#fff;
+}
+.btn-twittet:hover, .color-twitter:hover, .btn-twittet:active,.color-twitter:active {
+	background-color:#1a98d0;
+    color:#fff;
+}
+.btn-pinterest:hover, .color-pinterest:hover, .btn-pinterest:active,.color-pinterest:active {
+	background-color:#ba1016;
+    color:#fff;
+}
+.btn-tumblr:hover, .color-tumblr:hover, .btn-tumblr:active,.color-tumblr:active {
+	background-color:#1b4651;
+    color:#fff;
+}
+
+/* alerts */
+.alert-facebook {
+ background-color:#4c6aa9;
+}
+.alert-google {
+ background-color:#ee5c4a;
+}
+.alert-twitter {
+ background-color:#3cbaf2;
+}
+.alert-pinterest {
+ background-color:#dc3138;
+}
+.alert-tumblr {
+ background-color:#3d5873;
+}
+
+/* text - fore color */
+.text-facebook {
+ color:#4c6aa9;
+}
+.text-google {
+ color:#ee5c4a;
+}
+.text-twitter {
+ color:#3cbaf2;
+}
+.text-pinterest {
+ color:#dc3138;
+}
+.text-tumblr {
+ color:#3d5873;
+}
+
+.heading-icon {
+ font-size: 50px;
+ text-align: right;
+ position: absolute;
+ top: 7px;
+ right: 27px;
+ outline: none;
+}
+
