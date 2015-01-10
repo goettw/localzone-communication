@@ -1,0 +1,72 @@
+<script th:fragment="placesPanel-header">
+	//<![CDATA[
+
+	function showPlace(place) {
+		var response = document.getElementById('response');
+		var p = document.createElement('p');
+		p.style.wordWrap = 'break-word';
+		// p.appendChild(document.createTextNode(body));
+		newdiv = $(".place:last").clone();
+		$(newdiv).find(".body").html(place.body);
+		$(newdiv).find(".display-name").html(place.display_name);
+		$(newdiv).find(".distance").html(place.distance);
+
+		$("#placesDiv").prepend(newdiv);
+		//response.appendChild(p);
+	}
+	function showPlaces(radius) {
+		var query = {
+			location : {
+				'latitude' : posLatitude,
+				'longitude' : posLongitude,
+				'accuracy' : posAccuracy
+			},
+			radius : radius,
+		};
+		$.ajax({
+			type : "POST",
+			url : "restGetPlaces",
+			Accept : "application/json",
+			contentType : "application/json",
+			data : JSON.stringify(query)
+		}).done(function(msg) {
+			var placesDiv = document.getElementById('placesDiv');
+			while (placesDiv.firstChild) {
+				//The list is LIVE so it will re-index each call
+				placesDiv.removeChild(placesDiv.firstChild);
+			}
+			//var jsonData = JSON.parse(msg);
+			for (var i = 0; i < msg.length; i++) {
+				var place = msg[i];
+				console.log(place.display_name);
+				showPlace(place);
+			}
+		});
+
+	}
+	//]]>
+	</script>
+<th:block th:fragment="placesPanel">
+							<div class="col-md-9">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4>
+											In Ihrer Nähe<a class="fa fa-refresh pull-right"
+												value="Refresh" onclick="javascript:showlocation()"
+												href="javascript:;" />
+										</h4>
+									</div>
+									<ul id="placesDiv" class="list-group">
+										<p id="response"></p>
+									</ul>
+								</div>
+							</div>
+							<div style="visibility: hidden">
+								<li class="place list-group-item">
+									<div class="place-header">
+										<span class="display-name">Author</span>
+										<span class="distance">distance</span>
+									</div> <span class="body">body</span>
+								</li>
+							</div>
+							</th:block>

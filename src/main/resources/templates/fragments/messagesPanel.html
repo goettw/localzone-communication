@@ -1,0 +1,73 @@
+<script th:fragment="messagesPanel-header">
+	//<![CDATA[
+
+	function showMessage(message) {
+		var response = document.getElementById('response');
+		var p = document.createElement('p');
+		p.style.wordWrap = 'break-word';
+		// p.appendChild(document.createTextNode(body));
+		newdiv = $(".message:last").clone();
+		$(newdiv).find(".body").html(message.status);
+		$(newdiv).find(".author").html(message.from);
+		$(newdiv).find(".time").html(message.time);
+		$(newdiv).find(".distance").html(message.distance);
+
+		$("#conversationDiv").prepend(newdiv);
+		//response.appendChild(p);
+	}
+	function showMessages(radius) {
+		var query = {
+			location : {
+				'latitude' : posLatitude,
+				'longitude' : posLongitude,
+				'accuracy' : posAccuracy
+			},
+			radius : radius,
+		};
+		$.ajax({
+			type : "POST",
+			url : "restReceive",
+			Accept : "application/json",
+			contentType : "application/json",
+			data : JSON.stringify(query)
+		}).done(function(msg) {
+			var conversationDiv = document.getElementById('conversationDiv');
+			while (conversationDiv.firstChild) {
+				//The list is LIVE so it will re-index each call
+				conversationDiv.removeChild(conversationDiv.firstChild);
+			}
+			//var jsonData = JSON.parse(msg);
+			for (var i = 0; i < msg.length; i++) {
+				var message = msg[i];
+				console.log(message.status);
+				showMessage(message);
+			}
+		});
+
+	}
+	//]]>
+	</script>
+<th:block th:fragment="messagesPanel">
+							<div class="col-md-9">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4>
+											Latest Activity<a class="fa fa-refresh pull-right"
+												value="Refresh" onclick="javascript:showlocation()"
+												href="javascript:;" />
+										</h4>
+									</div>
+									<ul id="conversationDiv" class="list-group">
+										<p id="response"></p>
+									</ul>
+								</div>
+							</div>
+							<div style="visibility: hidden">
+								<li class="message list-group-item">
+									<div class="message-header">
+										<span class="author">Author</span> <span class="time">time</span>
+										<span class="distance">distance</span>
+									</div> <span class="body">body</span>
+								</li>
+							</div>
+							</th:block>

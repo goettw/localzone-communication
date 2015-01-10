@@ -3,36 +3,43 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
-<link rel="stylesheet" href="styles.css" />
+<th:block th:replace="fragments/header :: standard-header" />
 </head>
 <body>
 	<div th:replace="fragments/header :: header">test</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
+	<div id="wrapper">
 
-				<form action="#" th:action="@{/searchPlaces}" th:object="${search}"
-					method="post" accept-charset="utf-8">
+		<div id="main-wrapper">
+			<div id="main">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
 
-					<div class="form-group">
-					<label for="searchText" th:text="#{general.pointofinterest}">Point of Interest</label> 
-						<input type="text" class="form-control" id="searchText" th:field="*{name}" />
+							<form action="#" th:action="@{/searchPlaces}"
+								th:object="${search}" method="post" accept-charset="utf-8">
+
+								<div class="form-group">
+									<label for="searchText" th:text="#{general.pointofinterest}">Point
+										of Interest</label> <input type="text" class="form-control"
+										id="searchText" th:field="*{name}" />
+								</div>
+								<p>
+									<input type="submit" value="Search"
+										th:value="#{general.search}" />
+								</p>
+							</form>
+
+							<table>
+								<tr th:each="item:${respList}">
+									<td><a
+										th:href="@{/loadPlaceFromCache}+'?placeId='+${item.place_id}"><span
+											th:text="${item.display_name}"></span></a></td>
+								</tr>
+							</table>
+						</div>
 					</div>
-					<p>
-						<input type="submit" value="Search" th:value="#{general.search}" />
-					</p>
-				</form>
-
-				<table>
-					<tr th:each="item:${respList}">
-						<td><a
-							th:href="@{/loadPlaceFromCache}+'?placeId='+${item.place_id}"><span
-								th:text="${item.display_name}"></span></a></td>
-					</tr>
-				</table>
+				</div>
 			</div>
 
 		</div>

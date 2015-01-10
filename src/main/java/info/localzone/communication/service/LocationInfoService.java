@@ -1,5 +1,4 @@
 package info.localzone.communication.service;
-import info.localzone.communication.controller.AdminRestController;
 import info.localzone.communication.model.Location;
 import info.localzone.util.GeoUtils;
 

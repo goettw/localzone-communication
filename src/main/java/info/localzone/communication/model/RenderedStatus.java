@@ -1,6 +1,5 @@
 package info.localzone.communication.model;
 
-import javax.validation.constraints.NotNull;
 
 public class RenderedStatus {
 

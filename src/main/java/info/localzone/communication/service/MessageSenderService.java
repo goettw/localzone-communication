@@ -51,8 +51,8 @@ public class MessageSenderService {
 
 		sendToAllDestinations(hash, 3000, created, serializedMessage,message.getHeader().getFrom());
 
-		BoundListOperations<String, String> ops = template.boundListOps(new String(Pref.REDIS_AUTHOR_SENT + message.getHeader().getFrom().getName()));
-		ops.leftPush(serializedMessage);
+//		BoundListOperations<String, String> ops = template.boundListOps(new String(Pref.REDIS_AUTHOR_SENT + message.getHeader().getFrom().getName()));
+//		ops.leftPush(serializedMessage);
 
 		return hash.toBinaryString() + " - " + GeoUtils.latitudeSize(hash.getBoundingBox()) + "/" + GeoUtils.longitudeSize(hash.getBoundingBox());
 
@@ -70,7 +70,7 @@ public class MessageSenderService {
 				LOGGER.info("doublette at: " + fineGrainedHash.toBinaryString());
 			} else {
 				hashmap.put(fineGrainedHash.toBinaryString(), "");
-				sendToOneDestination(fineGrainedHash, created, serializedMessage, actor);
+			//	sendToOneDestination(fineGrainedHash, created, serializedMessage, actor);
 				i++;
 			}
 		}
@@ -78,7 +78,7 @@ public class MessageSenderService {
 
 	}
 
-	private void sendToOneDestination(GeoHash hash, Date created, String serializedMessage, Actor actor) {
+/*	private void sendToOneDestination(GeoHash hash, Date created, String serializedMessage, Actor actor) {
 		String key = hash.toBinaryString();
 		BoundZSetOperations<String, String> zops = template.boundZSetOps(key);
 		LOGGER.info("zadd: key,time,message = " + key + "," + created.getTime() + "," + GeoUtils.latitudeSize(hash.getBoundingBox()) + "/"
@@ -94,5 +94,5 @@ public class MessageSenderService {
 			LOGGER.info("zremove: key,message = " + key + "," + oldMessage);
 		zops.remove(oldMessage);
 		}
-	}
+	}*/
 }

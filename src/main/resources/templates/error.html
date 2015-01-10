@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Localzone Stream</title>
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script th:replace="fragments/googlemaps :: googlemapsheader" />
+
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/boom.css" />
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" />
+
+
+<link rel="stylesheet" href="css/localstyles.css" />
+<link rel="stylesheet" href="css/social.min.css" />
+
+
+
+</head>
+<body>
+	<div data-ui-view="" autoscroll="false" class="ng-scope">
+		<div th:replace="fragments/header :: header">test</div>
+		<div id="wrapper" class="ng-scope active">
+
+
+			<div id="main-wrapper" class="col-sm-12">
+				<div id="main">
+					<div class="container-fluid">
+
+						<div class="row margin-top-15 margin-bottom-15">
+							<div class="col-md-12">
+							<span th:text="${errorMessage.payload.localizedMessage}"/>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

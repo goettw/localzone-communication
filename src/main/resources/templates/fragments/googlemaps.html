@@ -11,8 +11,9 @@
         padding: 0px
       }
     </style>
+    <th:block th:fragment="googlemapsheader">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    <script th:fragment="googlemapsheader">
+    <script >
 // This example adds a red rectangle to a map.
 //<![CDATA[
            var map;
@@ -104,6 +105,7 @@ function drawRectangles (radius) {
 
 //]]>
     </script>
+    </th:block>
   </head>
   <body>
  

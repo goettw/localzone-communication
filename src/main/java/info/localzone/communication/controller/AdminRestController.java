@@ -2,8 +2,6 @@ package info.localzone.communication.controller;
 
 import info.localzone.communication.model.LocationZoneQuery;
 import info.localzone.communication.model.LocationZoneResponse;
-import info.localzone.communication.model.Place;
-import info.localzone.communication.model.openstreetmap.NomatimResponse;
 import info.localzone.communication.service.LocationInfoService;
 import info.localzone.communication.service.OpenStreetRestClient;
 import info.localzone.communication.service.PlacesService;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,26 +56,7 @@ public class AdminRestController {
 		return responses;
 	} 
 	
-	@RequestMapping(value="/createAuthorByName", method = RequestMethod.GET)
-	public String createAuthorByName (@RequestParam String name) {
-	
-			List <NomatimResponse> respList= openStreetRestClient.search(name);
-			for (NomatimResponse nomatimResponse : respList)
-				LOGGER.debug("response entity="+nomatimResponse.toString());
-			
-			if (respList.size()==1){
-				Place place = new Place ();
 
-				NomatimResponse nomatimResponse = respList.get(0);
-				LOGGER.debug("response entity="+nomatimResponse.toString());
-
-				place.setDisplay_name(nomatimResponse.getDisplay_name());
-				placesService.createPlace(place);
-				return respList.get(0).getDisplay_name();
-			}
-				
-			return "empty";
-	} 
 	
 	
 }
