@@ -1,0 +1,134 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+
+<th:block th:replace="fragments/header :: standard-header" />
+<th:block th:replace="fragments/googlemaps :: googlemapsheader" />
+
+<script>
+	$(function() { /* code here */
+		google.maps.event.addDomListener(window, 'load', initialize);
+	});
+	var directionsService = new google.maps.DirectionsService();
+	var directionsDisplay;
+
+	function initialize() {
+	
+		longitude = document.getElementById('longitude').innerHTML;
+		latitude = document.getElementById('latitude').innerHTML;
+		console.log("latitude=" + latitude + "longitude=" + longitude);
+
+		
+		initializeMap(latitude, longitude, 14);
+		//setMarker(latitude, longitude);
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(callback);
+		} else {
+			error('not supported');
+		}
+
+
+	}
+	function callback(position) {
+		  directionsDisplay = new google.maps.DirectionsRenderer();
+	posLatitude = position.coords.latitude;
+		posLongitude = position.coords.longitude;
+		directionsDisplay.setMap(map);
+		  var start = new google.maps.LatLng(posLatitude, posLongitude);
+		  var end = new google.maps.LatLng(latitude, longitude);
+		  calcRoute(start,end);
+	}
+	function calcRoute(start, end) {
+		
+		  var request = {
+		    origin:start,
+		    destination:end,
+		    travelMode: google.maps.TravelMode.DRIVING
+		  };
+		  directionsService.route(request, function(result, status) {
+		    if (status == google.maps.DirectionsStatus.OK) {
+		      directionsDisplay.setDirections(result);
+		    }
+		  });
+		}
+	
+</script>
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header">test</div>
+	<div id="wrapper">
+
+		<div id="main-wrapper">
+			<div id="main">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="panel panel-default">
+								<!-- Default panel contents -->
+								<div class="panel-heading">
+									<h4>
+										<span th:text="${place.display_name}" />
+									</h4>
+								</div>
+								<div class="panel-body">
+								<div class="pull-right" style="font-size:2em;">
+									<a th:href="@{/placeEdit(placeId=${place.id})}"
+										class="glyphicon glyphicon-edit "></a>
+										
+										<a th:href="@{http://www.google.com/search(q=${place.type + ' ' + place.display_name + ' ' + place.address.postcode + ' ' + place.address.city})}" class="glyphicon glyphicon-search"/>
+										</div>
+										<br />
+									<address>
+										<strong th:text="${place.display_name}"></strong> <br /> <span
+											th:text="${place.type}"></span><br /> <span
+											th:text="${place.address.postcode}"></span><span
+											th:text="${place.address.city}" style="margin-left: 5px;"></span>
+										<br /> <span th:text="${place.address.street}"></span> <span
+											th:text="${place.address.house_number}"
+											style="margin-left: 5px;"></span>
+										<th:block
+											th:if="${place.phoneNumber != null and !place.phoneNumber.isEmpty()}">
+											<br /> <strong th:text="#{place.phoneNumber}">Email</strong> <span th:text="${place.phoneNumber}"></span>
+										</th:block>
+									
+									<th:block
+										th:if="${place.primaryEmailAddress != null and !place.primaryEmailAddress.isEmpty()}">
+										
+											<br/><strong th:text="#{place.primaryEmailAddress}">Email</strong> <a th:href="@{mailto:(${place.primaryEmailAddress})}"
+												th:text="${place.primaryEmailAddress}">first.last@example.com</a>
+										
+									</th:block>
+									<th:block
+										th:if="${place.webSite != null and !place.webSite.isEmpty()}">
+										
+											<br/><strong th:text="#{place.webSite}">Email</strong> <a th:href="${place.webSite}" th:text="${place.webSite}" target="blank"></a>
+										
+									</th:block>
+								</address>
+								
+								</div>
+								<!-- Table -->
+
+							</div>
+						</div>
+						<div style="visibility: hidden;">
+							<span id="latitude" th:text="${place.lat}" /> <span
+								id="longitude" th:text="${place.lon}" />
+						</div>
+
+						<div class="col-md-3">
+							<div id="map-canvas"></div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

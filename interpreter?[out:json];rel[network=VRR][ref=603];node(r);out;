@@ -1,0 +1,638 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "2015-01-17T12:23:02Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 289256169,
+  "lat": 51.2608939,
+  "lon": 7.1429883,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Höchsten St. Josef Krankenhaus",
+    "public_transport": "platform",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 419648853,
+  "lat": 51.2608163,
+  "lon": 7.1437429,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Höchsten St. Josef Krankenhaus",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 419874827,
+  "lat": 51.2451377,
+  "lon": 7.1542750,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Schreinersweg"
+  }
+},
+{
+  "type": "node",
+  "id": 419876002,
+  "lat": 51.2477955,
+  "lon": 7.1530572,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Irenenstraße"
+  }
+},
+{
+  "type": "node",
+  "id": 420178490,
+  "lat": 51.2430903,
+  "lon": 7.1559376,
+  "tags": {
+    "highway": "bus_stop",
+    "local_ref": "4",
+    "name": "Sandhof",
+    "ref": "4"
+  }
+},
+{
+  "type": "node",
+  "id": 443382504,
+  "lat": 51.2761785,
+  "lon": 7.1159587,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Luhnberg"
+  }
+},
+{
+  "type": "node",
+  "id": 443383210,
+  "lat": 51.2757285,
+  "lon": 7.1161076,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Luhnberg"
+  }
+},
+{
+  "type": "node",
+  "id": 443383423,
+  "lat": 51.2795195,
+  "lon": 7.1126064,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Birkenhöhe",
+    "note": "FIXME: exact location?",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 444718053,
+  "lat": 51.2408143,
+  "lon": 7.1531020,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Uni-Halle",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 459648245,
+  "lat": 51.2431498,
+  "lon": 7.1549067,
+  "tags": {
+    "highway": "bus_stop",
+    "local_ref": "3",
+    "name": "Sandhof",
+    "ref": "3"
+  }
+},
+{
+  "type": "node",
+  "id": 471224967,
+  "lat": 51.2640528,
+  "lon": 7.1341476,
+  "tags": {
+    "bench": "yes",
+    "highway": "bus_stop",
+    "name": "Am Dorrenberg",
+    "public_transport": "platform",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 471224969,
+  "lat": 51.2616982,
+  "lon": 7.1390737,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Marienstraße",
+    "public_transport": "platform",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 471224970,
+  "lat": 51.2629561,
+  "lon": 7.1357858,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Friedhofskirche",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 471224980,
+  "lat": 51.2616057,
+  "lon": 7.1390225,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Marienstraße",
+    "public_transport": "platform",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 471224981,
+  "lat": 51.2627203,
+  "lon": 7.1359782,
+  "tags": {
+    "bench": "yes",
+    "highway": "bus_stop",
+    "name": "Friedhofskirche",
+    "public_transport": "platform",
+    "shelter": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 471224983,
+  "lat": 51.2651279,
+  "lon": 7.1331683,
+  "tags": {
+    "bench": "yes",
+    "highway": "bus_stop",
+    "name": "Am Dorrenberg",
+    "public_transport": "platform",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 471224987,
+  "lat": 51.2568903,
+  "lon": 7.1462500,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Wall/Museum",
+    "shelter": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 506811203,
+  "lat": 51.2435986,
+  "lon": 7.1480014,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Im Ostersiepen",
+    "public_transport": "platform",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "node",
+  "id": 577582016,
+  "lat": 51.2779437,
+  "lon": 7.1055369,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Eckbusch",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 577582017,
+  "lat": 51.2781212,
+  "lon": 7.1081475,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Freibad Eckbusch",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 577582018,
+  "lat": 51.2781494,
+  "lon": 7.1079071,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Freibad Eckbusch",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 577582019,
+  "lat": 51.2800043,
+  "lon": 7.1125218,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Birkenhöhe"
+  }
+},
+{
+  "type": "node",
+  "id": 616996551,
+  "lat": 51.2395813,
+  "lon": 7.1631659,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Rainer-Gruenter-Straße",
+    "operator": "Wuppertaler Stadtwerke (WSW)",
+    "shelter": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 616996555,
+  "lat": 51.2390557,
+  "lon": 7.1620402,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Rainer-Gruenter-Straße",
+    "operator": "Wuppertaler Stadtwerke (WSW)",
+    "shelter": "no",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 616996558,
+  "lat": 51.2384227,
+  "lon": 7.1609617,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Campus Freudenberg",
+    "operator": "Wuppertaler Stadtwerke (WSW)",
+    "shelter": "no",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 636869466,
+  "lat": 51.2502635,
+  "lon": 7.1487253,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Blankstraße",
+    "public_transport": "platform",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 636869471,
+  "lat": 51.2532057,
+  "lon": 7.1450833,
+  "tags": {
+    "bus": "yes",
+    "local_ref": "4",
+    "name": "Historische Stadthalle",
+    "public_transport": "stop_position"
+  }
+},
+{
+  "type": "node",
+  "id": 677518641,
+  "lat": 51.2397576,
+  "lon": 7.1557272,
+  "tags": {
+    "bench": "no",
+    "highway": "bus_stop",
+    "name": "Im Johannistal",
+    "shelter": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 677518645,
+  "lat": 51.2459542,
+  "lon": 7.1460503,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Mensa",
+    "public_transport": "platform",
+    "shelter": "no",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "node",
+  "id": 677518646,
+  "lat": 51.2486074,
+  "lon": 7.1485793,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Unterer Grifflenberg",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 681080958,
+  "lat": 51.2771683,
+  "lon": 7.1140246,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Birkenhöhe Schleife"
+  }
+},
+{
+  "type": "node",
+  "id": 681080964,
+  "lat": 51.2769785,
+  "lon": 7.1146528,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Birkenhöhe Schleife"
+  }
+},
+{
+  "type": "node",
+  "id": 681080974,
+  "lat": 51.2797257,
+  "lon": 7.1127077,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Birkenhöhe",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 681080978,
+  "lat": 51.2718671,
+  "lon": 7.1300717,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Hainstraße Mitte"
+  }
+},
+{
+  "type": "node",
+  "id": 681080989,
+  "lat": 51.2666318,
+  "lon": 7.1333192,
+  "tags": {
+    "bus": "yes",
+    "name": "Briller Kreuz",
+    "network": "VRR",
+    "operator": "WSW",
+    "public_transport": "stop_position"
+  }
+},
+{
+  "type": "node",
+  "id": 681081008,
+  "lat": 51.2679558,
+  "lon": 7.1311226,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Bethesda-Krankenhaus"
+  }
+},
+{
+  "type": "node",
+  "id": 681081015,
+  "lat": 51.2686222,
+  "lon": 7.1309262,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Bethesda-Krankenhaus"
+  }
+},
+{
+  "type": "node",
+  "id": 681081021,
+  "lat": 51.2700348,
+  "lon": 7.1302576,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Bremer Straße"
+  }
+},
+{
+  "type": "node",
+  "id": 681081034,
+  "lat": 51.2704641,
+  "lon": 7.1303783,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Bremer Straße"
+  }
+},
+{
+  "type": "node",
+  "id": 681081040,
+  "lat": 51.2716838,
+  "lon": 7.1302757,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Hainstraße Mitte"
+  }
+},
+{
+  "type": "node",
+  "id": 681081050,
+  "lat": 51.2772949,
+  "lon": 7.1195302,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "In den Birken"
+  }
+},
+{
+  "type": "node",
+  "id": 681081055,
+  "lat": 51.2775761,
+  "lon": 7.1198673,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "In den Birken"
+  }
+},
+{
+  "type": "node",
+  "id": 681081062,
+  "lat": 51.2781372,
+  "lon": 7.1281471,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Wasserturm"
+  }
+},
+{
+  "type": "node",
+  "id": 681081068,
+  "lat": 51.2768512,
+  "lon": 7.1293113,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Bredtchen"
+  }
+},
+{
+  "type": "node",
+  "id": 681081075,
+  "lat": 51.2762070,
+  "lon": 7.1294975,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Bredtchen"
+  }
+},
+{
+  "type": "node",
+  "id": 681081078,
+  "lat": 51.2811954,
+  "lon": 7.1249877,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Hardenberger Hof"
+  }
+},
+{
+  "type": "node",
+  "id": 681081091,
+  "lat": 51.2789216,
+  "lon": 7.1280911,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Wasserturm"
+  }
+},
+{
+  "type": "node",
+  "id": 681081097,
+  "lat": 51.2737755,
+  "lon": 7.1308513,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Friedhof Bredtchen"
+  }
+},
+{
+  "type": "node",
+  "id": 681081104,
+  "lat": 51.2737380,
+  "lon": 7.1310521,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Friedhof Bredtchen"
+  }
+},
+{
+  "type": "node",
+  "id": 681081112,
+  "lat": 51.2749680,
+  "lon": 7.1303666,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Anschlag"
+  }
+},
+{
+  "type": "node",
+  "id": 704235051,
+  "lat": 51.2774316,
+  "lon": 7.1043485,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Eckbusch",
+    "note": "FIXME: exact location?",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 704235255,
+  "lat": 51.2769415,
+  "lon": 7.1058061,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Am Eckbusch",
+    "note": "FIXME: exact location?",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 2047702969,
+  "lat": 51.2599508,
+  "lon": 7.1477367,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Karlsplatz",
+    "network": "VRR",
+    "operator": "WSW",
+    "public_transport": "stop_position"
+  }
+},
+{
+  "type": "node",
+  "id": 2047702970,
+  "lat": 51.2608805,
+  "lon": 7.1463107,
+  "tags": {
+    "bus": "yes",
+    "bus_stop:info:vocal": "yes",
+    "highway": "bus_stop",
+    "name": "Karlsplatz",
+    "network": "VRR",
+    "operator": "WSW",
+    "public_transport": "stop_position"
+  }
+},
+{
+  "type": "node",
+  "id": 2497279701,
+  "lat": 51.2501182,
+  "lon": 7.1491304,
+  "tags": {
+    "bus": "yes",
+    "name": "Blankstraße",
+    "network": "VRR",
+    "operator": "WSW",
+    "public_transport": "stop_position",
+    "wheelchair": "yes"
+  }
+}
+
+  ]
+}
