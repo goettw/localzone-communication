@@ -5,7 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
 	String road, house_number;
-	String country, country_code, city, state, postcode;
+	String country, country_code, city, state, postcode,city_district,footway;
+	public String getFootway() {
+		return footway;
+	}
+	public void setFootway(String footway) {
+		this.footway = footway;
+	}
+	public String getCity_district() {
+		return city_district;
+	}
+	public void setCity_district(String city_district) {
+		this.city_district = city_district;
+	}
 	public String getRoad() {
 		return road;
 	}

@@ -14,6 +14,8 @@ public class NomatimResponse {
 	String type;
 	Address address;
 	String place_id;
+
+	
 	public String getPlace_id() {
 		return place_id;
 	}

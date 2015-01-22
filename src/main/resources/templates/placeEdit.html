@@ -46,6 +46,14 @@
 											</div>
 										</div>
 										<div class="control-group">
+											<label for="display_name" th:text="#{place.type}">Display
+												Type</label>
+											<div class="controls">
+												<input type="text" class="form-control"
+													th:field="*{type}" />
+											</div>
+										</div>
+										<div class="control-group">
 											<label for="City" th:text="#{place.city}">City</label>
 											<div class="controls">
 												<div class="row">
@@ -71,6 +79,34 @@
 													<input type="text" class="form-control"
 														th:field="*{address.house_number}" />
 												</div>
+											</div>
+										</div>
+										<div class="control-group">
+											<div class="row">
+												<div class="col-md-6">
+											<label for="Street" th:text="#{place.phoneNumber}">phone</label>
+												</div>
+												<div class="col-md-6">
+											<label for="Street" th:text="#{place.primaryEmailAddress}">email</label>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<input type="text" class="form-control"
+														th:field="*{phoneNumber}" />
+												</div>
+												<div class="col-md-6">
+													<input type="text" class="form-control"
+														th:field="*{primaryEmailAddress}" />
+												</div>
+											</div>
+										</div>
+										<div class="control-group">
+											<label for="display_name" th:text="#{place.webSite}">Display
+												Name</label>
+											<div class="controls">
+												<input type="text" class="form-control"
+													th:field="*{webSite}" />
 											</div>
 										</div>
 										

@@ -7,7 +7,15 @@ public class RenderedPlace implements Comparable<RenderedPlace>{
 		return o.getDblDistance() > dblDistance ? 1: o.getDblDistance() < dblDistance ? -1 : 0;
 	}
 
-String distance,display_name,body;
+String distance,display_name,body,id;
+public String getId() {
+	return id;
+}
+
+public void setId(String id) {
+	this.id = id;
+}
+
 double dblDistance;
 
 public double getDblDistance() {

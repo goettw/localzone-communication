@@ -1,15 +1,11 @@
 package info.localzone.communication.service;
 
-import info.localzone.communication.model.Actor;
-import info.localzone.communication.model.Header;
 import info.localzone.communication.model.Location;
 import info.localzone.communication.model.Message;
-import info.localzone.communication.model.Payload;
 import info.localzone.communication.model.RenderedStatus;
 import info.localzone.pref.Pref;
 import info.localzone.util.GeoUtils;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,7 +26,6 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
 import ch.hsr.geohash.GeoHash;
-import ch.hsr.geohash.queries.GeoHashCircleQuery;
 
 @Service
 public class MessageReceiverService {

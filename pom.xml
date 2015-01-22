@@ -60,6 +60,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		 <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
@@ -95,6 +99,19 @@
 		        				spring-boot-starter-data-elasticsearch
 		        			</artifactId>
 		        		</dependency-->
+		        		<dependency>
+		        			<groupId>org.neo4j</groupId>
+		        			<artifactId>
+		        				neo4j-cypher-compiler-2.1
+		        			</artifactId>
+		        			<version>2.1.5</version>
+		        		</dependency>
+		        		<dependency>
+		        			<groupId>org.springframework.boot</groupId>
+		        			<artifactId>
+		        				spring-boot-starter-data-rest
+		        			</artifactId>
+		        		</dependency>
 	</dependencies>
 
 

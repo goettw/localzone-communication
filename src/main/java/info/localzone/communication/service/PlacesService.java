@@ -4,6 +4,7 @@ import info.localzone.communication.model.Location;
 import info.localzone.communication.model.LocationZoneQuery;
 import info.localzone.communication.model.Place;
 import info.localzone.communication.model.RenderedPlace;
+import info.localzone.communication.model.RenderedType;
 import info.localzone.pref.Pref;
 import info.localzone.util.GeoUtils;
 import info.localzone.util.RedisUtils;
@@ -13,13 +14,14 @@ import java.nio.charset.CharacterCodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
@@ -34,81 +36,56 @@ public class PlacesService {
 	private StringRedisTemplate redisTemplate;
 	@Autowired
 	LocationInfoService locationInfoService;
+	@Autowired
+	AsyncPlaceFunctions asyncPlaceFunctions;
+	@Autowired
+	MessageSource messageSource;
+	public List<RenderedType> getPlaceTypesOffered(LocationZoneQuery locationZoneQuery, Locale locale) {
+		GeoHash hash = GeoHash.withBitPrecision(locationZoneQuery.getLocation().getLatitude(), locationZoneQuery.getLocation().getLongitude(),
+				Pref.GEOHASH_PRECISION_NUMBEROFBITS);
 
-	public void savePlace(Place place) throws LocationServiceException {
-		String id = place.getId();
-		if (id == null || id.equals("")) {
-			id = RedisUtils.getPlaceId(redisTemplate);
-			place.setId(id);
-		}
-		LOGGER.debug("save place: " + place.getDisplay_name() + " (ID=" + place.getId() + ")");
-		Jackson2JsonRedisSerializer<Place> serializer = new Jackson2JsonRedisSerializer<Place>(Place.class);
-
-		try {
-			String serializedObject = StringUtils.byteToString(serializer.serialize(place));
-			GeoHash hash = GeoHash.withBitPrecision(place.getLat(), place.getLon(), Pref.GEOHASH_PRECISION_NUMBEROFBITS);
-
-			Location location = new Location(place.getLat(), place.getLat());
-			List<GeoHash> geoHashList = locationInfoService.getGeoHashes(location, Pref.RADIUS_FOR_INZONE_CACHE_METERS / 1000,
-					Pref.GEOHASH_PRECISION_NUMBEROFBITS);
-			List<String> hashCodeList = new ArrayList<String>();
-
-			for (GeoHash geoHash : geoHashList) {
-				hashCodeList.add(geoHash.toBinaryString());
+		List <String> typeList = new ArrayList<String>(RedisUtils.readInzonePlacesTypes(redisTemplate, 
+				hash.toBinaryString(), Pref.RADIUS_FOR_INZONE_CACHE_METERS ,
+				Pref.GEOHASH_PRECISION_NUMBEROFBITS)); 
+		List <RenderedType> renderedTypes = new ArrayList <RenderedType>();
+		LOGGER.debug("radius="+locationZoneQuery.getRadius());
+		
+		Collections.sort(typeList);
+		for (String type : typeList) {	
+			locationZoneQuery.setType(type);
+			List<RenderedPlace> renderedPlaces = getPlaces(locationZoneQuery);
+			if (renderedPlaces.size() > 0) {
+				RenderedType renderedType = new RenderedType();
+				renderedType.setType(type);
+				renderedType.setCount(renderedPlaces.size());
+				String displayText;
+				try {
+					displayText = messageSource.getMessage("placeType."+type,new Object[]{}, locale);
+					renderedType.setDisplayText(displayText);
+				} catch (org.springframework.context.NoSuchMessageException e) {
+					LOGGER.debug(e.getLocalizedMessage(),"no localized message for " + type + " found");
+					
+					renderedType.setDisplayText(type);
+				}
+				renderedTypes.add(renderedType);
 			}
-
-			RedisUtils.writePlace(redisTemplate, place, serializedObject, hash.toBinaryString());
-			RedisUtils.writeToInzoneCache(redisTemplate, place.getId(), hashCodeList, Pref.RADIUS_FOR_INZONE_CACHE_METERS, Pref.GEOHASH_PRECISION_NUMBEROFBITS);
-
-			if (place.getOriginId() == null || place.getOriginId().equals(""))
-				LOGGER.debug("place has no originId");
-			else
-				RedisUtils.writeToPlaceOriginLookup(redisTemplate, place.getOriginId(), id);
-
-		} catch (SerializationException e) {
-			LOGGER.error(e.getStackTrace().toString());
-			throw new LocationServiceException(e.getLocalizedMessage(), e.fillInStackTrace());
-		} catch (CharacterCodingException e) {
-			LOGGER.error(e.getStackTrace().toString());
-			throw new LocationServiceException(e.getLocalizedMessage(), e.fillInStackTrace());
 		}
-
-	}
-
-	public Place getPlaceByOriginId(String originId) throws LocationServiceException {
-		LOGGER.debug("looking for place by originId " + originId);
-
-		String placeId = RedisUtils.lookupPlaceByOriginId(redisTemplate, originId);
-		if (placeId == null || placeId.equals("")) {
-			LOGGER.debug("place not found: " + placeId);
-			return null;
-		}
-
-		String placeString = RedisUtils.readPlace(redisTemplate, placeId);
-		if (placeString == null || placeString.equals(null))
-			throw new LocationServiceException("Ups - place with id " + placeId + " not found although origin lookup for : " + originId
-					+ " said that place exists");
-
-		Jackson2JsonRedisSerializer<Place> serializer = new Jackson2JsonRedisSerializer<Place>(Place.class);
-		try {
-			Place place = serializer.deserialize(StringUtils.stringToByte(placeString));
-			return place;
-		} catch (SerializationException e) {
-			LOGGER.error(e.getStackTrace().toString());
-			throw new LocationServiceException(e.getLocalizedMessage(), e.fillInStackTrace());
-		} catch (CharacterCodingException e) {
-			LOGGER.error(e.getStackTrace().toString());
-			throw new LocationServiceException(e.getLocalizedMessage(), e.fillInStackTrace());
-		}
+		
+		return renderedTypes;
 	}
 
 	public List<RenderedPlace> getPlaces(LocationZoneQuery locationZoneQuery) {
-		GeoHash hash = GeoHash.withBitPrecision(locationZoneQuery.getLocation().getLatitude(), locationZoneQuery.getLocation().getLatitude(),
+		GeoHash hash = GeoHash.withBitPrecision(locationZoneQuery.getLocation().getLatitude(), locationZoneQuery.getLocation().getLongitude(),
 				Pref.GEOHASH_PRECISION_NUMBEROFBITS);
 
-		Set<String> placeIdSet = RedisUtils.readInzonePlacesCache(redisTemplate, hash.toBinaryString(), Pref.RADIUS_FOR_INZONE_CACHE_METERS,
-				Pref.GEOHASH_PRECISION_NUMBEROFBITS);
+		Set<String> placeIdSet = RedisUtils.readInzonePlacesCache(redisTemplate, hash.toBinaryString(), locationZoneQuery.getType(),
+				Pref.RADIUS_FOR_INZONE_CACHE_METERS, Pref.GEOHASH_PRECISION_NUMBEROFBITS);
 
+		if (placeIdSet.isEmpty()) {
+			LOGGER.info("zone " + hash.toBinaryString() + " is empty, loading asynchronously");
+			asyncPlaceFunctions.doBulkOverpassCatch(locationZoneQuery.getLocation());
+
+		}
 		ArrayList<RenderedPlace> renderedPlacesList = new ArrayList<RenderedPlace>();
 
 		for (String placeId : placeIdSet) {
@@ -124,10 +101,10 @@ public class PlacesService {
 				renderedPlace.setDisplay_name(place.getDisplay_name());
 				renderedPlace.setBody(place.getAddress().getStreet() + " " + place.getAddress().getHouse_number());
 
-				DecimalFormat df = new DecimalFormat("#.00");
+				DecimalFormat df = new DecimalFormat("#0.00");
 				renderedPlace.setDistance(df.format(distance) + " km");
 				renderedPlace.setDblDistance(distance);
-
+				renderedPlace.setId(placeId);
 				renderedPlacesList.add(renderedPlace);
 			} catch (Exception e) {
 				LOGGER.error(e.getLocalizedMessage(), e);
@@ -137,5 +114,24 @@ public class PlacesService {
 		Collections.sort(renderedPlacesList);
 
 		return renderedPlacesList;
+	}
+
+	public List<Place> getAllPlaces() {
+		List<String> serializedPlaces = RedisUtils.getAllPlacesAsJsonStrings(redisTemplate);
+		List<Place> placeList = new ArrayList<Place>();
+		Jackson2JsonRedisSerializer<Place> serializer = new Jackson2JsonRedisSerializer<Place>(Place.class);
+		Place place;
+
+		for (String serializedPlace : serializedPlaces) {
+			try {
+				place = serializer.deserialize(StringUtils.stringToByte(serializedPlace));
+				placeList.add(place);
+			} catch (SerializationException e) {
+				LOGGER.error(e.getLocalizedMessage(), e);
+			} catch (CharacterCodingException e) {
+				LOGGER.error(e.getLocalizedMessage(), e);
+			}
+		}
+		return placeList;
 	}
 }

@@ -4,8 +4,10 @@ import info.localzone.communication.model.Place;
 import info.localzone.communication.model.WebMessage;
 import info.localzone.communication.model.openstreetmap.NomatimResponse;
 import info.localzone.communication.model.openstreetmap.Search;
+import info.localzone.communication.service.AsyncPlaceFunctions;
 import info.localzone.communication.service.LocationServiceException;
 import info.localzone.communication.service.OpenStreetRestClient;
+import info.localzone.communication.service.PlaceMapper;
 import info.localzone.communication.service.PlacesService;
 import info.localzone.util.RedisUtils;
 import info.localzone.util.StringUtils;
@@ -34,9 +36,12 @@ public class AdminWebController {
 	OpenStreetRestClient openStreetRestClient;
 	@Autowired
 	private StringRedisTemplate redisTemplate;
+	@Autowired PlaceMapper placeMapper;
 
 	@Autowired
 	private PlacesService placesService;
+	@Autowired
+	AsyncPlaceFunctions asyncPlaceFunctions;
 
 	@RequestMapping("/zones")
 	public String zones() {
@@ -46,6 +51,10 @@ public class AdminWebController {
 	@RequestMapping("/admin/blank")
 	public String blank() {
 		return "admin/blank";
+	}
+	@RequestMapping("/admin/navbar")
+	public String navbar() {
+		return "admin/minimum-navbar";
 	}
 
 	@RequestMapping(value = "/searchPlaces", method = RequestMethod.GET)
@@ -87,19 +96,10 @@ public class AdminWebController {
 		try {
 			NomatimResponse nomatimResponse = serializer.deserialize(StringUtils.stringToByte(serializedObject));
 			LOGGER.debug("nomatimResponse.display_Name = " + nomatimResponse.getDisplay_name());
-			Place place = placesService.getPlaceByOriginId(nomatimResponse.getPlace_id());
+			Place place = asyncPlaceFunctions.getPlaceByOriginId(nomatimResponse.getPlace_id());
 
 			if (place == null) {
-				place = new Place();
-				place.setOriginId(nomatimResponse.getPlace_id());
-				place.setDisplay_name(nomatimResponse.getDisplay_name());
-				place.getAddress().setCity(nomatimResponse.getAddress().getCity());
-				place.getAddress().setPostcode(nomatimResponse.getAddress().getPostcode());
-				place.getAddress().setStreet(nomatimResponse.getAddress().getRoad());
-				place.getAddress().setHouse_number(nomatimResponse.getAddress().getHouse_number());
-				place.setLat(nomatimResponse.getLat());
-				place.setLon(nomatimResponse.getLon());
-			}
+				place = placeMapper.mapFromNomatim(nomatimResponse);			}
 			model.addAttribute("place", place);
 		} catch (CharacterCodingException e) {
 			LOGGER.error(e.getStackTrace().toString());
@@ -115,23 +115,5 @@ public class AdminWebController {
 		return "placeEdit";
 	}
 
-	@RequestMapping(params="cancel", value = "/savePlace", method = RequestMethod.POST)
-	public String cancelPlaceEdit(@ModelAttribute Place place, Model model) {
-		return "redirect:/searchPlaces";
-	}
-	
-	@RequestMapping(params="save", value = "/savePlace", method = RequestMethod.POST)
-	public String savePlace(@ModelAttribute Place place, Model model) {
-		try {
-			placesService.savePlace(place);
-			model.addAttribute("place", place);
-			model.addAttribute("message", new WebMessage());
-		} catch (LocationServiceException e) {
-			LOGGER.error(e.getStackTrace().toString());
-			ErrorMessage errorMessage = new ErrorMessage(e);
-			model.addAttribute("errorMessage", errorMessage);
-			return "error";
-		}
-		return "redirect:/searchPlaces";
-	}
+
 }

@@ -5,16 +5,22 @@ div.message {
 	border:1px solid #eEEEEE;
 }
 span.body {
-	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
+	color:#818181;
 }
 span.author {
 	font-weight:bold; 
 }
-span.time, span.distance {
-	font-size: 10x;
+span.time, span.distance{
 	color:#8899a6;
 	margin-left:5px;
+}
+span.display-name {
+	color:#818181;
+}
+a.place-type {
+	color:#818181;
+	
 }
 #map-canvas {
 	height:300px;

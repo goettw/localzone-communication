@@ -2,7 +2,6 @@
 	//<![CDATA[
 
 	function showPlace(place) {
-		var response = document.getElementById('response');
 		var p = document.createElement('p');
 		p.style.wordWrap = 'break-word';
 		// p.appendChild(document.createTextNode(body));
@@ -10,11 +9,12 @@
 		$(newdiv).find(".body").html(place.body);
 		$(newdiv).find(".display-name").html(place.display_name);
 		$(newdiv).find(".distance").html(place.distance);
+		$(newdiv).attr("href", "/placeView?placeId=" + place.id);
 
 		$("#placesDiv").prepend(newdiv);
 		//response.appendChild(p);
 	}
-	function showPlaces(radius) {
+	function showPlaces(radius, type) {
 		var query = {
 			location : {
 				'latitude' : posLatitude,
@@ -22,6 +22,7 @@
 				'accuracy' : posAccuracy
 			},
 			radius : radius,
+			type : type
 		};
 		$.ajax({
 			type : "POST",
@@ -44,29 +45,91 @@
 		});
 
 	}
+	
+	function showPlacesInRadius(type) {
+		radius = $("#amount").text();
+		$("#placeType").text(type);
+		showPlaces(radius,type);
+	}
+	
+	function readTypes(radius) {
+		var query = {
+			location : {
+				'latitude' : posLatitude,
+				'longitude' : posLongitude,
+				'accuracy' : posAccuracy
+			},
+			radius : radius
+		};
+		$.ajax({
+			type : "POST",
+			url : "restGetOfferedTypes",
+			Accept : "application/json",
+			contentType : "application/json",
+			data : JSON.stringify(query)
+		}).done(function(msg) {
+			var placesDiv = document.getElementById('placeTypesDiv');
+			while (placesDiv.firstChild) {
+				placesDiv.removeChild(placesDiv.firstChild);
+			}
+			for (var i = 0; i < msg.length; i++) {
+
+				var type = msg[i].type;
+				var count = msg[i].count;
+				var displayText = msg[i].displayText;
+				
+				console.log(type);
+				var placeTypeBody = document.getElementById('placeTypesBody');
+				newdiv = $(".placeType:last").clone();
+				$(newdiv).find(".place-type").html(displayText + " (" + count + ")");
+				$(newdiv).find(".place-type").attr("onclick","javascript:showPlacesInRadius('"+type+"');");
+				$("#placeTypesDiv").append(newdiv);
+			}
+		});
+
+	}
 	//]]>
-	</script>
+</script>
+
+<th:block th:fragment="placeTypePanel">
+	<ul class="nav nav-tabs">
+		<li class="pull-right">
+			<a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:;"> Type 
+				<span class="caret"></span>
+			</a>
+			<ul id="placeTypesDiv" class="dropdown-menu dropdown-menu-right" />
+		</li>
+	</ul>
+
+	<div style="visibility: hidden">
+		<li class="placeType">
+			<a href="javascript:#" class="place-type">type</a>
+		</li>
+<SPAN id="placeType">restaurant</SPAN>
+	</div>
+	
+</th:block>
+
 <th:block th:fragment="placesPanel">
-							<div class="col-md-9">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4>
-											In Ihrer Nähe<a class="fa fa-refresh pull-right"
-												value="Refresh" onclick="javascript:showlocation()"
-												href="javascript:;" />
-										</h4>
-									</div>
-									<ul id="placesDiv" class="list-group">
-										<p id="response"></p>
-									</ul>
-								</div>
-							</div>
-							<div style="visibility: hidden">
-								<li class="place list-group-item">
-									<div class="place-header">
-										<span class="display-name">Author</span>
-										<span class="distance">distance</span>
-									</div> <span class="body">body</span>
-								</li>
-							</div>
-							</th:block>
+	<div class="col-md-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>
+					In Ihrer Nähe
+					<a class="fa fa-refresh pull-right" value="Refresh" onclick="javascript:showlocation()" href="javascript:;" />
+				</h4>
+			</div>
+			<div id="placesDiv" class="list-group">
+				<p id="response"></p>
+			</div>
+		</div>
+	</div>
+	
+	<div style="visibility: hidden">
+		<a class="place list-group-item" href="#">
+			<div class="place-header">
+				<span class="display-name">Author</span> <span class="distance">distance</span>
+			</div> <span class="body">body</span>
+		</a>
+	</div>
+</th:block>

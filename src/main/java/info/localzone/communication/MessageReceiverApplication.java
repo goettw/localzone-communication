@@ -7,20 +7,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+@EnableAsync
 public class MessageReceiverApplication {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageReceiverApplication.class);
 	  @Autowired(required = false) RedisConnectionFactory redisConnectionFactory;
@@ -52,7 +56,14 @@ public class MessageReceiverApplication {
 		return new CountDownLatch(1);
 	}
 	
-	
+    @Bean(name = "messageSource")
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setCacheSeconds(5);
+        return messageSource;
+    }
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	CharacterEncodingFilter characterEncodingFilter() {
