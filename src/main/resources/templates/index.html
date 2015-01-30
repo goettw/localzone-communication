@@ -21,7 +21,7 @@
 			range : "min",
 			min : 0.5,
 			max : 3,
-			value : 1,
+			value : $("#amount").text(),
 			step : 0.5,
 			slide : function(event, ui) {
 				$("#amount").text(ui.value);
@@ -100,7 +100,7 @@
 												<div class="col-md-12">
 													Radius (km):
 													<SPAN id="amount" 
-														style="border: 0; color: #f6931f; font-weight: bold;" >
+														style="border: 0; color: #f6931f; font-weight: bold;" th:text="${httpSessionBean.radius}">
 													</SPAN>		
 													<div id="slider"/>
 												</div>

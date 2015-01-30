@@ -46,12 +46,12 @@ function drawCircle(centerlat,centerlon,rad) {
    });
 }
 var rectArray = [];
-function drawRectangle(lat1, lon1, lat2, lon2,opacity) {
+function drawRectangle(lat1, lon1, lat2, lon2,color,opacity) {
 var rectangle = new google.maps.Rectangle({
-    strokeColor: '#FF0000',
+    strokeColor: color,
     strokeOpacity: 0.8,
-    strokeWeight: 0,
-    fillColor: '#FF0000',
+    strokeWeight: 1,
+    fillColor: color,
     fillOpacity: opacity,
     map: map,
     bounds: new google.maps.LatLngBounds(

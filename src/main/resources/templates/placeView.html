@@ -73,6 +73,10 @@
 									<h4>
 										<span th:text="${place.display_name}" />
 									</h4>
+										<h5>
+										<span th:text="${renderedType.displayText}" />
+									</h5>
+									
 								</div>
 								<div class="panel-body">
 								<div class="pull-right" style="font-size:2em;">
@@ -83,8 +87,7 @@
 										</div>
 										<br />
 									<address>
-										<strong th:text="${place.display_name}"></strong> <br /> <span
-											th:text="${place.type}"></span><br /> <span
+										 <span
 											th:text="${place.address.postcode}"></span><span
 											th:text="${place.address.city}" style="margin-left: 5px;"></span>
 										<br /> <span th:text="${place.address.street}"></span> <span

@@ -2,7 +2,22 @@ package info.localzone.communication.model;
 
 public class LocationZoneResponse {
 	double minLongitude,minLatitude,maxLongitude,maxLatitude;
-	
+	String color;
+	public LocationZoneResponse (){}
+	public LocationZoneResponse (BoundingBox boundingBox) {
+		this.minLatitude = boundingBox.getTopLeftLat();
+		this.minLongitude = boundingBox.getTopLeftLon();
+		this.maxLatitude = boundingBox.getBottomRightLat();
+		this.maxLongitude = boundingBox.getBottomRightLon();
+	}
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	public double getMinLongitude() {
 		return minLongitude;
 	}

@@ -11,29 +11,7 @@
 	    <script>
 			//<![CDATA[           
 			$(function() {
-			    $( "#hashslider" ).slider({
-			     // orientation: "vertical",
-			      range: "min",
-			      min: 3,
-			      max: 7,
-			      value: 5,
-			      step: 1,
-			      slide: function( event, ui ) {
-			        $( "#hashlength" ).val( ui.value );
-			      }
-			    });
-			    
-			    $( "#hashlength" ).val( $( "#hashslider" ).slider( "value" ) );
-
-			    $( "#hashslider" ).on( "slidechange", function( event, ui ) {
-					$( "#hashlength" ).val( ui.value );
-					clearRectangles();
-				//	drawRectangles(ui.value,30);
-					//drawRectangles(ui.value,);
-					 
-					drawRectangles( $( "#amount" ).val(),'#0000FF',$( "#hashlength" ).val());
-		    		
-				} );
+			   
 			    
 			    
 			    
@@ -42,7 +20,7 @@
 				     // orientation: "vertical",
 				      range: "min",
 				      min: 0.5,
-				      max: 20,
+				      max: 200,
 				      value: 3,
 				      step: 0.1,
 				      slide: function( event, ui ) {
@@ -57,7 +35,7 @@
 						clearRectangles();
 					//	drawRectangles(ui.value,30);
 						//drawRectangles(ui.value,);
-						drawRectangles(ui.value,'#0000FF',$( "#hashlength" ).val());
+						drawRectangles(ui.value,'#0000FF');
 			    		drawCircle(document.getElementById('latitude').innerHTML,document.getElementById('longitude').innerHTML,parseFloat(ui.value)*1000);
 
 					} );
@@ -98,20 +76,19 @@
 	    	}	    		    	
 
 
-	    	function drawRectangles (radius,color,precision) {
+	    	function drawRectangles (radius,color) {
 				var query = { 
 					location: {
 						'latitude': posLatitude, 
 						'longitude': posLongitude, 
 						'accuracy': posAccuracy
 					},
-					radius:radius,
-					precision:precision
+					radius:radius
 				};
 					
 				$.ajax({
 					type: "POST",
-					url:"getLocationHashes",
+					url:"/admin/getPopulatedZones",
 					Accept : "application/json",
 					contentType: "application/json",
 					data: JSON.stringify(query)
@@ -144,14 +121,6 @@
 						<label for="amount">Radius (km):</label><input type="text" id="amount" readonly="readonly" style="border:0; color:#f6931f; font-weight:bold;"/> 
 					</p>
 					<div id="slider"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-3"> 
-					<p>
-						<label for="hashlength">Length:</label><input type="text" id="hashlength" readonly="readonly" style="border:0; color:#f6931f; font-weight:bold;"/> 
-					</p>
-					<div id="hashslider"></div>
 				</div>
 			</div>
 			<div class="row">

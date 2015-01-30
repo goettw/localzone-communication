@@ -4,10 +4,6 @@ import info.localzone.communication.model.openstreetmap.NomatimResponse;
 import info.localzone.communication.model.openstreetmap.OverpassElement;
 import info.localzone.communication.model.openstreetmap.OverpassResponse;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
@@ -18,8 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.web.util.UriTemplate;
 
 @Service
 public class OpenStreetRestClient {
@@ -75,7 +69,6 @@ private DecimalFormat getDecimalFormat () {
 		try {
 			ResponseEntity<NomatimResponse[]> responseEntity = restTemplate.getForEntity(sb.toString(), NomatimResponse[].class);
 
-			LOGGER.debug("body length=" + responseEntity.getBody().length);
 			List<NomatimResponse> respList = Arrays.asList(responseEntity.getBody());
 			return respList;
 		} catch (Exception e) {
@@ -114,7 +107,9 @@ private DecimalFormat getDecimalFormat () {
 			//URI uri = URI.create(url);
 			
 			ResponseEntity<OverpassResponse> responseEntity = restTemplate.getForEntity(url, OverpassResponse.class);
-			return responseEntity.getBody().getElements();
+			List<OverpassElement> elements = responseEntity.getBody().getElements();
+			LOGGER.debug("body length" + elements.size());
+		return elements;
 		
 
 		

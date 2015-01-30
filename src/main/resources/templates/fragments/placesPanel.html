@@ -46,9 +46,10 @@
 
 	}
 	
-	function showPlacesInRadius(type) {
+	function showPlacesInRadius(type, localizedPlaceType) {
 		radius = $("#amount").text();
 		$("#placeType").text(type);
+		$("#localizedPlaceType").text(localizedPlaceType);
 		showPlaces(radius,type);
 	}
 	
@@ -82,7 +83,7 @@
 				var placeTypeBody = document.getElementById('placeTypesBody');
 				newdiv = $(".placeType:last").clone();
 				$(newdiv).find(".place-type").html(displayText + " (" + count + ")");
-				$(newdiv).find(".place-type").attr("onclick","javascript:showPlacesInRadius('"+type+"');");
+				$(newdiv).find(".place-type").attr("onclick","javascript:showPlacesInRadius('" + type + "','" + displayText + "');");
 				$("#placeTypesDiv").append(newdiv);
 			}
 		});
@@ -92,6 +93,8 @@
 </script>
 
 <th:block th:fragment="placeTypePanel">
+<DIV id="placeType" style="visibility:hidden" th:text="${httpSessionBean.renderedType.type}"/>
+
 	<ul class="nav nav-tabs">
 		<li class="pull-right">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:;"> Type 
@@ -105,11 +108,9 @@
 		<li class="placeType">
 			<a href="javascript:#" class="place-type">type</a>
 		</li>
-<SPAN id="placeType">restaurant</SPAN>
 	</div>
 	
 </th:block>
-
 <th:block th:fragment="placesPanel">
 	<div class="col-md-9">
 		<div class="panel panel-default">
@@ -118,6 +119,13 @@
 					In Ihrer Nähe
 					<a class="fa fa-refresh pull-right" value="Refresh" onclick="javascript:showlocation()" href="javascript:;" />
 				</h4>
+				<h5>
+				
+				<SPAN id="localizedPlaceType" th:text="${httpSessionBean.renderedType.displayText}">
+				sssss
+				
+				</SPAN>
+				</h5>
 			</div>
 			<div id="placesDiv" class="list-group">
 				<p id="response"></p>

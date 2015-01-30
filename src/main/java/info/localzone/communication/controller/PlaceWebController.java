@@ -1,14 +1,17 @@
 package info.localzone.communication.controller;
 
 import info.localzone.communication.model.Place;
+import info.localzone.communication.model.RenderedType;
 import info.localzone.communication.model.WebMessage;
 import info.localzone.communication.service.AsyncPlaceFunctions;
 import info.localzone.communication.service.LocationServiceException;
-import info.localzone.communication.service.PlacesService;
+
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +26,14 @@ public class PlaceWebController {
 
 	@Autowired
 	AsyncPlaceFunctions asyncPlaceFunctions;
-
+	@Autowired
+	MessageSource messageSource;
 	@RequestMapping("placeView")
-	public String placeView(@RequestParam("placeId") String placeId, Model model) {
+	public String placeView(@RequestParam("placeId") String placeId, Model model, Locale locale) {
 		try {
 			Place place = asyncPlaceFunctions.getPlaceById(placeId);
 			model.addAttribute("place", place);
+			model.addAttribute("renderedType",new RenderedType(place.getType(),messageSource,locale));
 		} catch (LocationServiceException e) {
 			LOGGER.error(e.getMessage(), e);
 			return "error";

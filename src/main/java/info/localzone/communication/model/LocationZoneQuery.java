@@ -3,6 +3,13 @@ package info.localzone.communication.model;
 public class LocationZoneQuery {
 	Location location;
 	double radius;
+	int precision;
+	public int getPrecision() {
+		return precision;
+	}
+	public void setPrecision(int precision) {
+		this.precision = precision;
+	}
 	public String getType() {
 		return type;
 	}
