@@ -1,52 +1,108 @@
 package info.localzone.communication.model;
 
-public class RenderedPlace implements Comparable<RenderedPlace>{
-@Override
+public class RenderedPlace implements Comparable<RenderedPlace> {
+	@Override
 	public int compareTo(RenderedPlace o) {
-		
-		return o.getDblDistance() > dblDistance ? 1: o.getDblDistance() < dblDistance ? -1 : 0;
+		return o.getDblDistance() > dblDistance ? 1 : o.getDblDistance() < dblDistance ? -1 : 0;
 	}
 
-String distance,display_name,body,id;
-public String getId() {
-	return id;
-}
+	public String getStreet() {
+		return street;
+	}
 
-public void setId(String id) {
-	this.id = id;
-}
+	public void setStreet(String street) {
+		this.street = street;
+	}
 
-double dblDistance;
+	public String getZip() {
+		return zip;
+	}
 
-public double getDblDistance() {
-	return dblDistance;
-}
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
 
-public void setDblDistance(double dblDistance) {
-	this.dblDistance = dblDistance;
-}
+	public String getCity() {
+		return city;
+	}
 
-public String getDistance() {
-	return distance;
-}
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-public void setDistance(String distance) {
-	this.distance = distance;
-}
+	String distance, display_name, body, id, street,zip,city,phone,website, localizedType,osmId;
 
-public String getDisplay_name() {
-	return display_name;
-}
+	public String getOsmId() {
+		return osmId;
+	}
 
-public void setDisplay_name(String display_name) {
-	this.display_name = display_name;
-}
+	public void setOsmId(String osmId) {
+		this.osmId = osmId;
+	}
 
-public String getBody() {
-	return body;
-}
+	public String getLocalizedType() {
+		return localizedType;
+	}
 
-public void setBody(String body) {
-	this.body = body;
-}
+	public void setLocalizedType(String localizedType) {
+		this.localizedType = localizedType;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	double dblDistance;
+
+	public double getDblDistance() {
+		return dblDistance;
+	}
+
+	public void setDblDistance(double dblDistance) {
+		this.dblDistance = dblDistance;
+	}
+
+	public String getDistance() {
+		return distance;
+	}
+
+	public void setDistance(String distance) {
+		this.distance = distance;
+	}
+
+	public String getDisplay_name() {
+		return display_name;
+	}
+
+	public void setDisplay_name(String display_name) {
+		this.display_name = display_name;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
 }

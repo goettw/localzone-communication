@@ -1,0 +1,22 @@
+<html data-ng-app="zoneApp">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<th:block th:replace="fragments/header :: standard-header"/>
+</head>
+
+<body>
+	<div th:replace="fragments/header :: header">test</div>
+	
+	<div id="wrapper">
+		<div id="main-wrapper" class="col-sm-12">
+			<div class="container-fluid">
+				<div class="row margin-top-15">
+					<div class="col-md-12">
+						<div th:replace="fragments/dashboard :: dashboard">test</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

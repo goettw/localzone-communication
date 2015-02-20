@@ -2,30 +2,29 @@ package info.localzone.communication.service;
 
 import info.localzone.communication.model.Place;
 import info.localzone.communication.model.openstreetmap.NomatimResponse;
+import info.localzone.communication.model.openstreetmap.OsmPosition;
 import info.localzone.communication.model.openstreetmap.OverpassElement;
-import info.localzone.util.RedisLocationStoreManager;
-import info.localzone.util.StringUtils;
+import info.localzone.communication.service.overpass.OverpassStorageService;
 
-import java.nio.charset.CharacterCodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.SerializationException;
-import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ImmutableMap;
 
-@Component
 public class PlaceMapper {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlaceMapper.class);
-	@Autowired
-	private StringRedisTemplate redisTemplate;
+
+	OverpassStorageService overpassStorageService;
+
+	public PlaceMapper(OverpassStorageService overpassStorageService) {
+
+		this.overpassStorageService = overpassStorageService;
+	}
 
 	public Place mapFromNomatim(NomatimResponse nomatimResponse) {
 		Place place = new Place();
@@ -50,8 +49,7 @@ public class PlaceMapper {
 			place.getAddress().setHouse_number(nomatimResponse.getAddress().getHouse_number());
 		else
 			place.getAddress().setHouse_number("");
-		place.setLat(nomatimResponse.getLat());
-		place.setLon(nomatimResponse.getLon());
+		place.setPosition(getPositionArray(nomatimResponse));
 		place.setType(nomatimResponse.getType().substring(0, 1).toUpperCase() + nomatimResponse.getType().substring(1));
 		return place;
 	}
@@ -66,8 +64,7 @@ public class PlaceMapper {
 			return null;
 		}
 		Place place = new Place();
-		place.setLat(overpassElement.getLat());
-		place.setLon(overpassElement.getLon());
+		place.setPosition(getPositionArray(overpassElement));
 		place.setOriginId(overpassElement.getId());
 
 		HashMap<String, String> tags = overpassElement.getTags();
@@ -83,6 +80,16 @@ public class PlaceMapper {
 		place.setDisplay_name(getTag(tags, "name"));
 
 		String type = getTag(tags, "amenity");
+
+		if (type == null) {
+
+			String subType = getTag(tags, "shop");
+			if (subType != null) {
+				type = "shop";
+				place.setSubType(subType);
+			}
+		}
+
 		if (type == null)
 			return null;
 		if (typeMapper.containsKey(type)) {
@@ -98,27 +105,28 @@ public class PlaceMapper {
 
 		return place;
 	}
-	@Autowired RedisLocationStoreManager redisLocationStoreManager;
 
+	private double[] getPositionArray(OsmPosition osmPosition) {
+		double[] position = new double[2];
+		position[0] = osmPosition.getLat();
+		position[1] = osmPosition.getLon();
+		return position;
+
+	}
 
 	private Place fillWayLocations(OverpassElement overpassElement, Place place) {
 		String firstNode = overpassElement.getNodes().get(0);
 		LOGGER.debug("way " + overpassElement.getTags().get("name") + " found, first node = " + firstNode);
 		if (firstNode != null) {
-			String serializedValue = redisLocationStoreManager.getFromOpenStreetResultCache(firstNode);
-			if (serializedValue == null) {
-				LOGGER.debug("firstNode = null for " + overpassElement.getId());
-				return place;
-			}
+
 			try {
 
-				OverpassElement refNode = serializer.deserialize(StringUtils.stringToByte(serializedValue));
-				place.setLat(refNode.getLat());
-				place.setLon(refNode.getLon());
-			} catch (SerializationException e) {
-				LOGGER.error(e.getLocalizedMessage(), e);
-				return place;
-			} catch (CharacterCodingException e) {
+				OverpassElement refNode = overpassStorageService.getById(firstNode);
+				if (refNode == null)
+					throw new LocationServiceException("overpass lookup failed for id = " + firstNode);
+
+				place.setPosition(getPositionArray(refNode));
+			} catch (LocationServiceException e) {
 				LOGGER.error(e.getLocalizedMessage(), e);
 				return place;
 			}
@@ -153,7 +161,7 @@ public class PlaceMapper {
 
 	public boolean isReferenceNode(OverpassElement overpassElement) {
 		HashMap<String, String> tags = overpassElement.getTags();
-		if (tags == null || isTagEmpty(tags, "name") || isTagEmpty(tags, "amenity")
+		if (tags == null || isTagEmpty(tags, "name") || (isTagEmpty(tags, "amenity") && isTagEmpty(tags, "shop"))
 				|| (isTagEmpty(tags, "addr:city") && isTagEmpty(tags, "addr:city-district")))
 			return true;
 

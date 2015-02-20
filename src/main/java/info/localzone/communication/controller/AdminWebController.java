@@ -4,17 +4,25 @@ import info.localzone.communication.model.openstreetmap.NomatimResponse;
 import info.localzone.communication.model.openstreetmap.Search;
 import info.localzone.communication.service.AsyncPlaceFunctions;
 import info.localzone.communication.service.OpenStreetRestClient;
-import info.localzone.communication.service.PlaceMapper;
 import info.localzone.communication.service.PlacesService;
 import info.localzone.util.RedisLocationStoreManager;
 import info.localzone.util.StringUtils;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.CharacterCodingException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
@@ -31,13 +39,53 @@ public class AdminWebController {
 	OpenStreetRestClient openStreetRestClient;
 	@Autowired
 	private StringRedisTemplate redisTemplate;
-	@Autowired PlaceMapper placeMapper;
-
 	@Autowired
 	private PlacesService placesService;
 	@Autowired
 	AsyncPlaceFunctions asyncPlaceFunctions;
+	   @Autowired(required = false) DataSource dataSource;
+	    @Autowired(required = false) RedisConnectionFactory redisConnectionFactory;
+	
+    @RequestMapping("/services")
+    public String home(Model model) {
+        Map<Class<?>, String> services = new LinkedHashMap<Class<?>, String>();
+        services.put(redisConnectionFactory.getClass(), toString(redisConnectionFactory));
+        model.addAttribute("services", services.entrySet());
+        
+    //    model.addAttribute("instanceInfo", instanceInfo);
+        
+        return "admin/home";
+    }
 
+    private String toString(RedisConnectionFactory redisConnectionFactory) {
+        if (redisConnectionFactory == null) {
+            return "<none>";
+        } else {
+            if (redisConnectionFactory instanceof JedisConnectionFactory) {
+                JedisConnectionFactory jcf = (JedisConnectionFactory) redisConnectionFactory;
+                return jcf.getHostName().toString() + ":" + jcf.getPort();
+            } else if (redisConnectionFactory instanceof LettuceConnectionFactory) {
+                LettuceConnectionFactory lcf = (LettuceConnectionFactory) redisConnectionFactory;
+                return lcf.getHostName().toString() + ":" + lcf.getPort();
+            }
+            return "<unknown> " + redisConnectionFactory.getClass();
+        }
+    }
+   
+    private String stripCredentials(String urlString) {
+        try {
+            if (urlString.startsWith("jdbc:")) {
+                urlString = urlString.substring("jdbc:".length());
+            }
+            URI url = new URI(urlString);
+            return new URI(url.getScheme(), null, url.getHost(), url.getPort(), url.getPath(), null, null).toString();
+        }
+        catch (URISyntaxException e) {
+            System.out.println(e);
+            return "<bad url> " + urlString;
+        }
+    }
+	
 	@RequestMapping("/zones")
 	public String zones() {
 		return "admin/zones";

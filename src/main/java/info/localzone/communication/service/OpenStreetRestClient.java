@@ -83,6 +83,8 @@ private DecimalFormat getDecimalFormat () {
 		DecimalFormat df = getDecimalFormat();
 		StringBuffer sb = new StringBuffer();
 		sb.append("http://overpass-api.de/api/interpreter?data=[out:json];(node[amenity][name]");
+		//sb.append("http://overpass-api.de/api/interpreter?data=[out:json];(node[name]");
+		
 		StringBuffer bb= new StringBuffer();
 		bb.append("(");
 		bb.append(df.format(lat1));
@@ -95,6 +97,8 @@ private DecimalFormat getDecimalFormat () {
 		bb.append(");");
 		sb.append(bb);
 		sb.append("way[amenity][name]");
+		//sb.append("way[name]");
+		
 		sb.append(bb);
 		sb.append(");(._;>;);out;");
 		//restTemplate.getForEntity(url, responseType, urlVariables)

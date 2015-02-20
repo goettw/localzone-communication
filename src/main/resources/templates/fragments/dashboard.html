@@ -1,0 +1,86 @@
+<th:block th:fragment="dashboard">
+<div class="container-fluid">
+  <a class="pull-right" href="/user-profile"><span class="fa fa-2x fa-gear"></span></a>
+
+  <div class="tab-content pad-0">
+      <div class="tab-pane panel active" id="activity">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+                <h5>Active users</h5>
+                <div class="progress progress-striped active stretch-right" title="No. of active users on-line" data-toggle="tooltip">
+                  <div class="progress-bar progress-bar-success" style="width:40%;"></div>
+                </div>
+                <h5>Authenticated</h5>
+                <div class="progress stretch-right" title="Authenticated users" data-toggle="tooltip">
+                  <div class="progress-bar progress-bar-success" style="width:26%;"></div>
+                </div>
+                <h5>Requests</h5>
+                <div class="progress stretch-right" title="No. of requests" data-toggle="tooltip">
+                  <div class="progress-bar progress-bar-success" style="width:86%;"></div>
+                </div>
+                <h5>Completed</h5>
+                <div class="progress stretch-right" title="No. of completed requests" data-toggle="tooltip">
+                  <div class="progress-bar progress-bar-success" style="width:60%;"></div>
+                </div>
+                <h5>Pending</h5>
+                <div class="progress progress-striped active stretch-right" title="No. of pending requests" data-toggle="tooltip">
+                  <div class="progress-bar progress-bar-success" style="width:30%;"></div>
+                </div>
+            </div><!--/col-4-->
+            <div class="col-sm-8">
+              <h4 class="text-center">
+                <div class="btn-group btn-toggle realtime"> 
+                 <button class="btn btn-xs btn-default">off</button>
+                 <button class="btn btn-xs btn-success active">live</button>
+                </div>
+              </h4>
+              <div flot-live="" id="chart1" class="big-chart"></div>
+            </div><!--/col-8-->
+          </div><!--/row-->
+        </div><!--/panel-body-->
+      </div><!--/pane--><!--/pane-->
+    </div><!--/tab-content-->
+
+    <!--row of 4 boxes-->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="well">
+              <h4 class="text-danger"><span class="label label-danger pull-right">- 9%</span> New Users </h4>
+              <div class="progress progress-sm">
+                <div class="progress-bar progress-bar-danger" style="width:9%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="well">
+              <h4 class="text-success"><span class="label label-success pull-right">+ 3%</span> Returning </h4>
+              <div class="progress progress-sm">
+                <div class="progress-bar progress-bar-success" style="width:3%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="well">
+              <h4 class="text-primary"><span class="label label-primary pull-right">201</span> Sales </h4>
+              <div class="progress progress-sm">
+                <div class="progress-bar progress-bar-primary" style="width:80%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="well">
+              <h4 class="text-success"><span class="label label-success pull-right">+ 24%</span> Pageviews </h4>
+              <div class="progress progress-sm">
+                <div class="progress-bar progress-bar-success" style="width:24%;"></div>
+              </div>
+            </div>
+          </div>
+        </div><!--/row-->    
+      </div><!--/col-12-->
+    </div><!--/row--><!--/row-->
+    
+</div><!--/container-fluid-->
+</th:block>

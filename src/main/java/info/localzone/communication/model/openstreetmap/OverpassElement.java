@@ -3,9 +3,13 @@ package info.localzone.communication.model.openstreetmap;
 import java.util.HashMap;
 import java.util.List;
 
-public class OverpassElement implements Comparable<OverpassElement>{
-	String type, id;
-	double lat,lon;
+import org.springframework.data.annotation.Id;
+
+public class OverpassElement extends OsmPosition implements Comparable<OverpassElement> {
+	@Id
+	String id;
+	String type;
+
 	List <String> nodes;
 	public List<String> getNodes() {
 		return nodes;
@@ -27,18 +31,7 @@ public class OverpassElement implements Comparable<OverpassElement>{
 		this.id = id;
 	}
 
-	public double getLat() {
-		return lat;
-	}
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-	public double getLon() {
-		return lon;
-	}
-	public void setLon(double lon) {
-		this.lon = lon;
-	}
+
 	public HashMap <String,String>getTags() {
 		return tags;
 	}

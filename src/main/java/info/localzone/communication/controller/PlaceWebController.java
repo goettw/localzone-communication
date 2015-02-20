@@ -3,8 +3,8 @@ package info.localzone.communication.controller;
 import info.localzone.communication.model.Place;
 import info.localzone.communication.model.RenderedType;
 import info.localzone.communication.model.WebMessage;
-import info.localzone.communication.service.AsyncPlaceFunctions;
 import info.localzone.communication.service.LocationServiceException;
+import info.localzone.communication.service.place.PlaceStorageService;
 
 import java.util.Locale;
 
@@ -20,18 +20,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 public class PlaceWebController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlaceWebController.class);
-
-	@Autowired
-	AsyncPlaceFunctions asyncPlaceFunctions;
+	@Autowired PlaceStorageService placeStorageService;
 	@Autowired
 	MessageSource messageSource;
 	@RequestMapping("placeView")
 	public String placeView(@RequestParam("placeId") String placeId, Model model, Locale locale) {
 		try {
-			Place place = asyncPlaceFunctions.getPlaceById(placeId);
+			Place place = placeStorageService.getPlaceById(placeId);
 			model.addAttribute("place", place);
 			model.addAttribute("renderedType",new RenderedType(place.getType(),messageSource,locale));
 		} catch (LocationServiceException e) {
@@ -42,10 +41,12 @@ public class PlaceWebController {
 	}
 	
 	
+
+
 	@RequestMapping("placeEdit")
 	public String placeEdit(@RequestParam("placeId") String placeId, Model model) {
 		try {
-			Place place = asyncPlaceFunctions.getPlaceById(placeId);
+			Place place = placeStorageService.getPlaceById(placeId);
 			model.addAttribute("place", place);
 		} catch (LocationServiceException e) {
 			LOGGER.error(e.getMessage(), e);
@@ -62,7 +63,7 @@ public class PlaceWebController {
 	@RequestMapping(params="save", value = "/savePlace", method = RequestMethod.POST)
 	public String savePlace(@ModelAttribute Place place, Model model) {
 		try {
-			asyncPlaceFunctions.savePlace(place);
+			placeStorageService.save(place);
 			model.addAttribute("place", place);
 			model.addAttribute("message", new WebMessage());
 		} catch (LocationServiceException e) {

@@ -1,143 +1,79 @@
-<script th:fragment="placesPanel-header">
-	//<![CDATA[
 
-	function showPlace(place) {
-		var p = document.createElement('p');
-		p.style.wordWrap = 'break-word';
-		// p.appendChild(document.createTextNode(body));
-		newdiv = $(".place:last").clone();
-		$(newdiv).find(".body").html(place.body);
-		$(newdiv).find(".display-name").html(place.display_name);
-		$(newdiv).find(".distance").html(place.distance);
-		$(newdiv).attr("href", "/placeView?placeId=" + place.id);
 
-		$("#placesDiv").prepend(newdiv);
-		//response.appendChild(p);
-	}
-	function showPlaces(radius, type) {
-		var query = {
-			location : {
-				'latitude' : posLatitude,
-				'longitude' : posLongitude,
-				'accuracy' : posAccuracy
-			},
-			radius : radius,
-			type : type
-		};
-		$.ajax({
-			type : "POST",
-			url : "restGetPlaces",
-			Accept : "application/json",
-			contentType : "application/json",
-			data : JSON.stringify(query)
-		}).done(function(msg) {
-			var placesDiv = document.getElementById('placesDiv');
-			while (placesDiv.firstChild) {
-				//The list is LIVE so it will re-index each call
-				placesDiv.removeChild(placesDiv.firstChild);
-			}
-			//var jsonData = JSON.parse(msg);
-			for (var i = 0; i < msg.length; i++) {
-				var place = msg[i];
-				console.log(place.display_name);
-				showPlace(place);
-			}
-		});
-
-	}
-	
-	function showPlacesInRadius(type, localizedPlaceType) {
-		radius = $("#amount").text();
-		$("#placeType").text(type);
-		$("#localizedPlaceType").text(localizedPlaceType);
-		showPlaces(radius,type);
-	}
-	
-	function readTypes(radius) {
-		var query = {
-			location : {
-				'latitude' : posLatitude,
-				'longitude' : posLongitude,
-				'accuracy' : posAccuracy
-			},
-			radius : radius
-		};
-		$.ajax({
-			type : "POST",
-			url : "restGetOfferedTypes",
-			Accept : "application/json",
-			contentType : "application/json",
-			data : JSON.stringify(query)
-		}).done(function(msg) {
-			var placesDiv = document.getElementById('placeTypesDiv');
-			while (placesDiv.firstChild) {
-				placesDiv.removeChild(placesDiv.firstChild);
-			}
-			for (var i = 0; i < msg.length; i++) {
-
-				var type = msg[i].type;
-				var count = msg[i].count;
-				var displayText = msg[i].displayText;
-				
-				console.log(type);
-				var placeTypeBody = document.getElementById('placeTypesBody');
-				newdiv = $(".placeType:last").clone();
-				$(newdiv).find(".place-type").html(displayText + " (" + count + ")");
-				$(newdiv).find(".place-type").attr("onclick","javascript:showPlacesInRadius('" + type + "','" + displayText + "');");
-				$("#placeTypesDiv").append(newdiv);
-			}
-		});
-
-	}
-	//]]>
-</script>
-
-<th:block th:fragment="placeTypePanel">
-<DIV id="placeType" style="visibility:hidden" th:text="${httpSessionBean.renderedType.type}"/>
-
-	<ul class="nav nav-tabs">
-		<li class="pull-right">
-			<a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:;"> Type 
-				<span class="caret"></span>
-			</a>
-			<ul id="placeTypesDiv" class="dropdown-menu dropdown-menu-right" />
-		</li>
-	</ul>
-
-	<div style="visibility: hidden">
-		<li class="placeType">
-			<a href="javascript:#" class="place-type">type</a>
-		</li>
-	</div>
-	
-</th:block>
 <th:block th:fragment="placesPanel">
-	<div class="col-md-9">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4>
-					In Ihrer Nähe
-					<a class="fa fa-refresh pull-right" value="Refresh" onclick="javascript:showlocation()" href="javascript:;" />
-				</h4>
-				<h5>
-				
-				<SPAN id="localizedPlaceType" th:text="${httpSessionBean.renderedType.displayText}">
-				sssss
-				
-				</SPAN>
-				</h5>
-			</div>
-			<div id="placesDiv" class="list-group">
-				<p id="response"></p>
-			</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4>In Ihrer Nähe</h4>
+			<h5 th:text="*{channel}"></h5>
 		</div>
-	</div>
-	
-	<div style="visibility: hidden">
-		<a class="place list-group-item" href="#">
-			<div class="place-header">
-				<span class="display-name">Author</span> <span class="distance">distance</span>
-			</div> <span class="body">body</span>
-		</a>
+		<!--  >ul class="timeline list-group" ng-controller="offerControl">
+					<li class="clearfix list-group-item" ng-repeat="offer in offers | orderBy:'time'">
+						<div class="timeline-badge">
+							<h3 title="resource title" class="media-heading">
+								<a href="/resource/0" class="ng-binding">{{offer.header}}</a>
+							</h3>
+						</div>
+						<div class="timeline-panel">
+							<div class="col-md-2">
+								<img class="img-responsive img-thumbnail" style="height: 100px;"
+									src="{{offer.img}}"/>
+							</div>
+							<div class="col-md-4">
+								<p title="description" class="list-group-item-text ng-binding">
+									{{offer.body}}</p>
+								<p class="small">{{offer.price}}</p>
+								<strong class="ng-binding">{{offer.place}}</strong>
+
+								<address class="small">{{offer.address.street}} -
+									{{offer.address.zip}} {{offer.address.city}} -
+									{{offer.address.phone}}</address>
+							</div>
+
+							<div class="col-md-6">
+								<span class="badge pull-right"> {{offer.time}} min</span>
+							</div>
+						</div>
+
+					</li>
+				</ul-->
+		<ul class="timeline list-group" ng-controller="placesControl">
+			<li class="clearfix list-group-item" ng-repeat="place in places | orderBy:'dblDistance'">
+				<div class="timeline-badge">
+					<h3 title="resource title" class="media-heading">
+						<a href="/placeView?placeId={{place.id}}" class="ng-binding">{{place.display_name}}</a>
+					</h3>
+				</div>
+				<div class="timeline-panel">
+					<div class="col-xs-3">
+						
+						<div class="small">
+							<a href="http://www.openstreetmap.org/node/{{place.osmId}}">
+								<img src="/img/osm_logo.png"
+								class="img-responsive img-thumbnail" style="height: 25px;" />
+							</a>
+						</div>
+					</div>
+					<div class="col-xs-8">
+						<address class="small">
+						
+							<span class="strong">{{place.localizedType}}</span>
+							<br/>
+								{{place.street}}<br/>{{place.zip}}
+							{{place.city}} 
+							<span ng-hide="place.phone == ''">						
+								<br/><strong th:text="#{place.phoneNumber}"/> {{place.phone}}
+							</span>
+						</address>
+						
+						<span class="badge pull-right"> {{place.distance}}</span>
+
+					</div>
+
+					<div class="col-xs-1"></div>
+				</div>
+			</li>
+			<div>{{message}}</div>
+		</ul>
+
 	</div>
 </th:block>

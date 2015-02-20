@@ -3,13 +3,12 @@ package info.localzone.communication.model.openstreetmap;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NomatimResponse {
+public class NomatimResponse extends OsmPosition{
 	@Override
 	public String toString() {
 		
 		return "display_name="+display_name+"latitude="+lat+"longitude="+lon;
 	}
-	double lat,lon;
 	String display_name;
 	String type;
 	Address address;
@@ -22,18 +21,7 @@ public class NomatimResponse {
 	public void setPlace_id(String place_id) {
 		this.place_id = place_id;
 	}
-	public double getLat() {
-		return lat;
-	}
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-	public double getLon() {
-		return lon;
-	}
-	public void setLon(double lon) {
-		this.lon = lon;
-	}
+
 	public String getDisplay_name() {
 		return display_name;
 	}

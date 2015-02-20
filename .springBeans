@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:info.localzone.communication.MessageReceiverApplication</config>
+		<config>java:info.localzone.communication.LocalzoneApplicationig>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

@@ -1,128 +1,32 @@
-<!DOCTYPE html>
-<html>
+<html data-ng-app="zoneApp">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Localzone Stream</title>
-<script src="sockjs-0.3.4.js"></script>
-<script src="stomp.js"></script>
-
-
-<th:block th:replace="fragments/googlemaps :: googlemapsheader" />
-
 <th:block th:replace="fragments/header :: standard-header"/>
-
-
-
-<script>
-	//<![CDATA[
-	$(function() {
-		$("#slider").slider({
-			// orientation: "vertical",
-			range : "min",
-			min : 0.5,
-			max : 3,
-			value : $("#amount").text(),
-			step : 0.5,
-			slide : function(event, ui) {
-				$("#amount").text(ui.value);
-			}
-		});
-
-		$("#amount").text($("#slider").slider("value"));
-
-		$("#slider").on("slidechange", function(event, ui) {
-			$("#amount").text(ui.value);
-			var type = $("#placeType").html();
-			showPlaces(ui.value,type);
-			
-			readTypes(ui.value);
-		});
-	});
-
-	//]]>
-</script>
-
-<script th:replace="fragments/placesPanel :: placesPanel-header"/>
-
-<script type="text/javascript">
-	//<![CDATA[
-	var posLongitude;
-	var posLatitude;
-	var accuracy;
-
-	google.maps.event.addDomListener(window, 'load', initialize);
-
-	function initialize() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(callback);
-		} else {
-			error('not supported');
-		}
-	}
-
-	function showlocation() {
-		// One-shot position request.
-		navigator.geolocation.getCurrentPosition(callback);
-	}
-
-	function callback(position) {
-		document.getElementById('latitude').innerHTML = position.coords.latitude;
-		document.getElementById('longitude').innerHTML = position.coords.longitude;
-		posLatitude = position.coords.latitude;
-		posLongitude = position.coords.longitude;
-		posAccuracy = position.coords.accuracy;
-		var radius = $("#amount").html();
-		var type = $("#placeType").html();
-		showPlaces(radius,type);
-		readTypes(radius);
-	}
-
-	//]]>
-	
-</script>
 </head>
+
 <body>
-	<div data-ui-view="" autoscroll="false" class="ng-scope">
-		<div th:replace="fragments/header :: header">test</div>
-		<div id="wrapper" >
-			<div id="main-wrapper" class="col-sm-12">
-				<div id="main">
-					<div class="container-fluid">
-						<div class="row margin-top-15 margin-bottom-15">
-							<div class="col-md-3">
-								<!--div class="row">
-									<div class="col-md-12" id="map-canvas"></div>
-								</div-->
-								<div class="row">
-									<div class="col-md-12">
-										<div class="well">
-											<div class="row">
-												<div class="col-md-12">
-													Radius (km):
-													<SPAN id="amount" 
-														style="border: 0; color: #f6931f; font-weight: bold;" th:text="${httpSessionBean.radius}">
-													</SPAN>		
-													<div id="slider"/>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-12">
-													<th:block th:replace="fragments/placesPanel :: placeTypePanel"/>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>								
-							</div>
-							<th:block th:replace="fragments/placesPanel :: placesPanel"/>
-						</div>
-					</div>
-				</div>
-				<div style="visibility: hidden">
-					<br />
-					<div style="visibility: hidden">
-						Latitude: <span id="latitude"></span> <br /> Longitude: <span
-							id="longitude"></span>
+	<div th:replace="fragments/header :: header">test</div>
+	
+	<div id="wrapper">
+		<div id="main-wrapper" class="col-sm-12">
+			<div class="container-fluid">
+				<div class="row margin-top-15">
+					<div class="col-md-12" ng-controller="channelNavigationControl">
+					
+					
+					
+					<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Wählen Sie Ihren Kanal:</h3>
+  </div>
+  <div class="panel-body">
+					
+					
+													<div class="list-group" >
+							
+									<a class="list-group-item" ng-repeat="channel in channelList | orderBy:'displayText'" href="/{{channel.channel}}/index.html" >{{channel.displayText}}</a>
+							</div>	
+						</div></div>
 					</div>
 				</div>
 			</div>

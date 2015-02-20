@@ -53,14 +53,14 @@ public class AdminRestController {
 
 		return responses;
 	}
-
+/*
 	@RequestMapping(value = "/admin/getPopulatedZones", method = RequestMethod.POST)
 	@ResponseBody
 	List<LocationZoneResponse> getPopulatedZones(@RequestBody LocationZoneQuery locationZoneQuery) {
 		double radiusKm = locationZoneQuery.getRadius();
 		int precision;
 
-		if (radiusKm < 5) {
+		if (radiusKm < 15) {
 			precision = 6;
 		} else if (radiusKm < 20) {
 			precision = 5;
@@ -70,18 +70,37 @@ public class AdminRestController {
 		}
 		List<String> geoHashList = locationInfoService.getGeoHashesInCircle(locationZoneQuery.getLocation(), radiusKm, precision);
 
-		geoHashList = placesService.getPopulatedZones(geoHashList);
+		//geoHashList = placesService.getPopulatedZones(geoHashList);
 		ArrayList<LocationZoneResponse> responses = new ArrayList<LocationZoneResponse>();
-		for (String geoHash : geoHashList) {
-			LocationZoneResponse locationZoneResponse = fillLocationZoneResponse(geoHash);
+		for (String zoneId : geoHashList) {
+			int count = placesService.channelMemberCount(zoneId, "restaurant");
+			LOGGER.debug("zoneId="+zoneId + " - " + count);
+			if (count == 0)
+				continue;
+			int density = count*2;
+			LocationZoneResponse locationZoneResponse = fillLocationZoneResponse(zoneId);
+			String color = "#000000";
+			if (density < 3) {
+				color = "#000000";
+			}
+			else if (density < 10) {
+				color = "#00ff00";
+			}
+			else if (density < 20) {
+				color = "#0000ff";
+			}
+			else {
+				color = "#ff0000";
+			}
+			locationZoneResponse.setColor(color);
 			responses.add(locationZoneResponse);
 		}
 
-		LOGGER.debug("numberofpopulatedzones = " + responses.size());
+		LOGGER.info("numberofpopulatedzones = " + responses.size());
 		return responses;
-	}
+	}*/
 
-	private LocationZoneResponse fillLocationZoneResponse(String geoHash) {
+	/*private LocationZoneResponse fillLocationZoneResponse(String geoHash) {
 		BoundingBox boundingBox = locationInfoService.getBoundingBox(geoHash);
 		LocationZoneResponse locationZoneResponse = new LocationZoneResponse();
 		locationZoneResponse.setCode(geoHash);
@@ -94,5 +113,5 @@ public class AdminRestController {
 		//LOGGER.info(boundingBox.getMinLat() + "-" + boundingBox.getMinLon() + "-" + boundingBox.getMaxLat() + "-" + boundingBox.getMaxLon());
 		return locationZoneResponse;
 	}
-
+*/
 }
