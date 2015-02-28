@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<th:block th:replace="fragments/header :: standard-header" />
+</head>
+<body>
+	<div th:replace="fragments/header :: header">test</div>
+	<div id="wrapper">
+
+		<div id="main-wrapper">
+			<div id="main">
+				<div class="container-fluid">
+					<div class="row margin-top-15">
+						<div class="panel">
+							<div class="panel-body">
+								<form action="#" th:action="@{/register}" th:object="${registerForm}" method="post" accept-charset="utf-8" class="form">
+									<div class="form-group" th:class="${#fields.hasErrors('email')}? 'fieldError has-error' : form-group">
+										<label for="email" th:text="#{registerForm.email}">Email</label>
+										<div class="controls">
+											<input type="text" class="form-control" th:field="*{email}"  />
+											<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect email</p>
+										</div>
+									</div>
+									<div class="form-group" th:class="${#fields.hasErrors('password')}? 'fieldError has-error' : form-group">
+										<label for="password" th:text="#{registerForm.password}">Password</label>
+										<div class="controls">
+											<input type="text" class="form-control" th:field="*{password}" />
+											<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect password</p>
+										</div>
+									</div>
+									<div class="form-group" th:class="${#fields.hasErrors('passwordRepeated')}? 'fieldError has-error' : form-group">
+										<label for="passwordRepeated" th:text="#{registerForm.passwordRepeated}">Password repeated</label>
+										<div class="controls">
+											<input type="text" class="form-control" th:field="*{passwordRepeated}"  />
+											<p th:if="${#fields.hasErrors('passwordRepeated')}" th:errors="*{passwordRepeated}">Incorrect email</p>
+										</div>
+									</div>
+									<div class="control-group" style="margin-top: 15px;">
+										<div class="controls pull-right">
+											<input class="btn btn-primary" name="cancel" type="submit" value="Submit" th:value="#{general.cancel}" /> <input class="btn btn-primary" name="save"
+												type="submit" value="Submit" th:value="#{general.save}" />
+										</div>
+									</div>
+									<ul th:if="${#fields.hasErrors('global')}">
+										<li th:each="err : ${#fields.errors('global')}" th:text="${err}">Input is incorrect</li>
+									</ul>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
